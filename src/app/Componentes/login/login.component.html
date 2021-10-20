@@ -1,0 +1,43 @@
+<div class="div-general">
+    <div class="div-imagen"></div>
+    <div class="div-formulario" *ngIf="!registro">
+        <h1>Login</h1>
+
+        <mat-form-field class="example-full-width">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="usuario@email.com" [(ngModel)]="usuario.email">
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+            <mat-label>Clave</mat-label>
+            <input matInput type="password" [(ngModel)]="usuario.pass">
+        </mat-form-field>
+        <br>
+        <button (click)="admin()" class="btn-warning btn-sm invitado"  onclick="this.blur();">Ingresar como admin</button>
+        
+        <button (click)="empleado()" class="btn-warning btn-sm invitado"  onclick="this.blur();">Ingresar como empleado</button>
+        
+        <button mat-raised-button color="primary" (click)="Ingresar()" style="width: 100%;">Ingresar</button>
+        <!--<button mat-button color="primary" (click)="registro=true" style="width: 100%;">Registrarme</button>-->
+    </div>
+    <!--<div class="div-formulario" *ngIf="registro">
+        <h1>Registro</h1>
+        <mat-form-field class="example-full-width">
+            <mat-label>Nombre</mat-label>
+            <input matInput placeholder="Nombre" [(ngModel)]="usuario.nombre">
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="usuario@email.com" [(ngModel)]="usuario.email">
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+            <mat-label>Clave</mat-label>
+            <input matInput type="password" [(ngModel)]="usuario.pass">
+        </mat-form-field>
+        <br>
+        <button mat-raised-button color="primary" (click)="Registrar()" style="width: 100%;">Aceptar</button>
+        <button mat-button color="primary" (click)="registro = false" style="width: 100%;">cancelar</button>
+    </div>-->
+</div>
