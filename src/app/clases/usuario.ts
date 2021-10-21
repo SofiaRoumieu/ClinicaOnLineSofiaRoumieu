@@ -3,5 +3,13 @@ export class Usuario {
     nombre: string;
     email: string;
     pass: string;
-    perfil: string;
+    apellido:string;
+    tipo:string;
+    dni:string;
+    estado:number;
+    img1:string;
+    img2:string;
+    rol:string;
+    edad:number;
+    obraSocial:string;
 }

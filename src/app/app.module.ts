@@ -13,7 +13,9 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox'; 
 import { HttpClientModule } from '@angular/common/http';
+import { MatSelectModule } from '@angular/material/select';
 
 // FIREBASE
 import { AngularFireModule } from '@angular/fire';
@@ -26,6 +28,8 @@ import { firebase } from "../environments/environment";
 import { MenuComponent } from './Componentes/menu/menu.component';
 import { AltaProductoComponent } from './Componentes/alta-producto/alta-producto.component';
 import { TablaPaisesComponent } from './Componentes/tabla-paises/tabla-paises.component';
+import { RegistroComponent } from './Componentes/registro/registro.component';
+import { VerificacionCuentaComponent } from './Componentes/verificacion-cuenta/verificacion-cuenta.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +39,9 @@ import { TablaPaisesComponent } from './Componentes/tabla-paises/tabla-paises.co
     ErrorComponent,
     MenuComponent,
     AltaProductoComponent,
-    TablaPaisesComponent
+    TablaPaisesComponent,
+    RegistroComponent,
+    VerificacionCuentaComponent
   ],
   imports: [
     BrowserModule,
@@ -48,6 +54,8 @@ import { TablaPaisesComponent } from './Componentes/tabla-paises/tabla-paises.co
     MatCardModule,
     MatTableModule,
     MatIconModule,
+    MatSelectModule,
+    MatCheckboxModule,
     HttpClientModule,
     AngularFireModule.initializeApp(firebase),
     AngularFirestoreModule, // firestore

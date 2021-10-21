@@ -1,0 +1,96 @@
+<div class="contenedor" >
+    <mat-card class="container" >
+      <div class="imgcontainer">
+        <img src="../../../assets/login.png" alt="Avatar" class="avatar" max-width="104" >
+      </div>
+      <div mat-card-avatar style="margin-top: 30px;" class="example-header-image"></div>
+      <form class="example-form">
+        <mat-form-field style="width: 25%;" class="full-width-input">
+              <mat-label style="color: #c2185b;">Seleccione una opción</mat-label>
+          <mat-select [(ngModel)]="usuario.tipo" name="tipo"> 
+
+            <mat-option value="profesional"> Profesional</mat-option>
+            <mat-option value="paciente"> Paciente </mat-option>
+            
+          </mat-select>
+       </mat-form-field>
+       <br>
+        <mat-form-field style="width: 40%; margin-right: 10%;" >
+            <mat-label  style="color: #c2185b;" >Nombre</mat-label>
+            <input  style="color: black;" matInput type="text" [(ngModel)]="usuario.nombre" name="nombre">
+          </mat-form-field>
+          <mat-form-field style="width: 40%;" >
+            <mat-label  style="color: #c2185b; margin-right: 0rem;" >Apellido</mat-label>
+            <input  style="color: black;" matInput type="text" [(ngModel)]="usuario.apellido" name="apellido">
+          </mat-form-field>
+          <mat-form-field style="width: 40%; margin-right: 10%;">
+            <mat-label  style="color: #c2185b;" >Edad</mat-label>
+            <input  style="color: black;" matInput type="number" [(ngModel)]="usuario.edad" name="edad">
+          </mat-form-field>
+          <mat-form-field style="width: 40%; margin-right: 10%;">
+            <mat-label  style="color: #c2185b;" >Dni</mat-label>
+            <input  style="color: black;" matInput type="number" [(ngModel)]="usuario.dni" name="dni">
+          </mat-form-field>
+          <mat-form-field style="width: 40%;margin-right: 10%;" *ngIf="usuario.tipo == 'paciente'" >
+            <mat-label  style="color: #c2185b; margin-right: 0rem;" >obraSocial</mat-label>
+            <input  style="color: black;" matInput type="text" [(ngModel)]="usuario.obraSocial" name="obraSocial">
+          </mat-form-field>
+        <mat-form-field style="width: 40%; margin-right: 10%;">
+          <mat-label  style="color: #c2185b;" >Email</mat-label>
+          <input  style="color: black;" matInput type="email" [(ngModel)]="usuario.email" name="email">
+        </mat-form-field>
+       
+        <mat-form-field style="width: 40%; margin-right: 10%;"  >
+          <mat-label  style="color: #c2185b;">Contraseña</mat-label>
+          <input style="color: black;" matInput type="password" [(ngModel)]="usuario.pass" name="psw">
+        </mat-form-field>
+        <mat-form-field style="width: 40%;" >
+            <mat-label  style="color: #c2185b;">Repetir Contraseña</mat-label>
+            <input style="color: black;" matInput type="password" [(ngModel)]="clave" name="psw">
+        </mat-form-field>
+
+        <div class="row">
+        <div class="divFoto"  >
+            <mat-label  style="color: #c2185b;">Foto 1</mat-label>
+            
+            <label class="custom-file">
+              <input class="foto"  style="color: black; " type="file" (change)="onFileSelected($event)" name="psw">
+              <mat-icon>cloud_upload</mat-icon><span class="span">Subir</span>
+            <mat-icon *ngIf="img1" style="background-color: green; border-radius: 100%;">check_circle</mat-icon>
+            </label>
+           
+        </div>
+        <div  class="divFoto" *ngIf="usuario.tipo == 'paciente'">
+          <mat-label  style="color: #c2185b;">Foto 2</mat-label>
+          <label class="custom-file">
+            <input class="foto"  style="color: black; " type="file" (change)="onFileSelected2($event)" name="psw">
+            <mat-icon>cloud_upload</mat-icon><span class="span">Subir</span>
+            <mat-icon *ngIf="img2" style="background-color: green; border-radius: 100%;">check_circle</mat-icon>
+          </label>
+         
+       </div>
+    </div>
+       
+       <span *ngIf="usuario.tipo == 'profesional'" class="example-list-section">
+        <ul style="padding: 0rem;"> 
+          <mat-label  style="color: #c2185b;">Especialidades</mat-label>
+          <div style="overflow: auto; height: 6rem; margin-top: 1rem;">
+            <div *ngFor="let item of especialidades" class="especialidad" >
+              <mat-checkbox labelPosition="after" [ngModelOptions]="{standalone: true}" [(ngModel)]="item.completed"
+                            [color]="item.color"
+                            (ngModelChange)="updateAllComplete()">
+                {{item.name}}
+              </mat-checkbox>
+            </div>
+
+          </div>
+        </ul>
+      </span>
+        <br>
+        <button style="margin-top: 2rem;" class="btn btn-block"   mat-raised-button color="primary"  (click)="Entrar()">Registrarse</button>
+      
+      </form>
+    
+    </mat-card>
+  
+  </div>

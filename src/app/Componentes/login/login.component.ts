@@ -15,21 +15,43 @@ export class LoginComponent implements OnInit {
 
   usuario = new Usuario();
   registro = false;
+  emailClass:'';
+  claveClass:'';
+  email:string;
+  clave:string;
+  recaptcha: any=false;
+  siteKey:string;
+  desa:boolean = false;
 
   constructor(private route: Router,
               private authService: AuthService,
               private db: AngularFirestore,
               private api: ApiService) {
 
-                this.api.ObtenerPaises().subscribe((paises:any)=>{console.log(paises)}, error=>{console.log(error)});
-                //this.api.ObtenerMiGit().subscribe((miGit:any)=>{console.log(miGit)}, error=>{console.log(error)});
-               }
+//this.api.ObtenerPaises().subscribe((paises:any)=>{console.log(paises)}, error=>{console.log(error)});
+//this.api.ObtenerMiGit().subscribe((miGit:any)=>{console.log(miGit)}, error=>{console.log(error)});
+}
+
+  usuarios: Array<any> = [
+  { id: 0, nombre: "Admin", correo: "admin@admin.com", clave: "123456" },
+  { id: 1, nombre: "Paciente", correo: "roumieusofia@gmail.com", clave: "123456" },
+  { id: 2, nombre: "Profesional", correo: "kvatano@gmail.com", clave: "123456" }
+  
+] 
+            
 
   ngOnInit() {
    
   }
 
-  admin(){
+  onChange(id) {
+    console.log("llega");
+    console.info(this.usuarios[id].correo);
+    this.email = this.usuarios[id].correo;
+    this.clave = this.usuarios[id].clave;
+  }
+
+  /*admin(){
     
     this.usuario.email = "admin@mail.com";
     this.usuario.pass = "123456";
@@ -37,15 +59,17 @@ export class LoginComponent implements OnInit {
   empleado(){
     this.usuario.email = "empleado@mail.com";
     this.usuario.pass = "123456";
-  }
+  }*/
   Ingresar() {
-    console.log(this.usuario);
+    console.log(this.email," + ", this.clave);
 
-    this.authService.signIn(this.usuario).then(res => {
+    this.authService.signIn(this.email, this.clave).then(res => {
       console.log('Login exitoso', res);
+      this.usuario.email=this.email;
+      this.usuario.pass=this.clave;
 
-      this.db.collection('pruebas').add({
-          email: this.usuario.email,
+      this.db.collection('ingresos').add({
+          email: this.email,
           fechaacceso: firestore.Timestamp.fromDate(new Date()),
           dato: 'dato de prueba'
       })

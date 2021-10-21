@@ -1,43 +1,45 @@
-<div class="div-general">
-    <div class="div-imagen"></div>
-    <div class="div-formulario" *ngIf="!registro">
-        <h1>Login</h1>
-
-        <mat-form-field class="example-full-width">
-            <mat-label>Email</mat-label>
-            <input matInput placeholder="usuario@email.com" [(ngModel)]="usuario.email">
-        </mat-form-field>
-        <br>
-        <mat-form-field class="example-full-width">
-            <mat-label>Clave</mat-label>
-            <input matInput type="password" [(ngModel)]="usuario.pass">
-        </mat-form-field>
-        <br>
-        <button (click)="admin()" class="btn-warning btn-sm invitado"  onclick="this.blur();">Ingresar como admin</button>
+  <div class="contenedor " >
+    <mat-card class="container ld ld-blur-in" >
+      <div class="imgcontainer">
+      </div>
+      <div mat-card-avatar class="example-header-image"></div>
+      <form class="example-form">
+        <mat-form-field style="width: 100%;" class="full-width-input">
+          <mat-label style="color: #c2185b;">Seleccione un Usuario</mat-label>
+        <mat-select>
+  
+        <mat-option (click)="onChange(usuario.id)" *ngFor="let usuario of usuarios"value="{{usuario.id}}"> {{usuario.nombre}}</mat-option>
         
-        <button (click)="empleado()" class="btn-warning btn-sm invitado"  onclick="this.blur();">Ingresar como empleado</button>
-        
-        <button mat-raised-button color="primary" (click)="Ingresar()" style="width: 100%;">Ingresar</button>
-        <!--<button mat-button color="primary" (click)="registro=true" style="width: 100%;">Registrarme</button>-->
-    </div>
-    <!--<div class="div-formulario" *ngIf="registro">
-        <h1>Registro</h1>
-        <mat-form-field class="example-full-width">
-            <mat-label>Nombre</mat-label>
-            <input matInput placeholder="Nombre" [(ngModel)]="usuario.nombre">
+      </mat-select>
+   </mat-form-field>
+  
+        <mat-form-field style="width: 100%;" class="full-width-input">
+          <mat-label  style="color: #c2185b;" >Email</mat-label>
+          <input  style="color: black;" matInput type="email" [(ngModel)]="email" name="email">
         </mat-form-field>
-        <br>
-        <mat-form-field class="example-full-width">
-            <mat-label>Email</mat-label>
-            <input matInput placeholder="usuario@email.com" [(ngModel)]="usuario.email">
+       
+        <mat-form-field style="width: 100%;"  class="full-width-input">
+          <mat-label  style="color: #c2185b;">Contraseña</mat-label>
+          <input style="color: black;" matInput type="password" [(ngModel)]="clave" name="psw">
         </mat-form-field>
-        <br>
-        <mat-form-field class="example-full-width">
-            <mat-label>Clave</mat-label>
-            <input matInput type="password" [(ngModel)]="usuario.pass">
-        </mat-form-field>
-        <br>
-        <button mat-raised-button color="primary" (click)="Registrar()" style="width: 100%;">Aceptar</button>
-        <button mat-button color="primary" (click)="registro = false" style="width: 100%;">cancelar</button>
-    </div>-->
-</div>
+     
+        <!--<div  class="recaptcha">
+          <re-captcha  (resolved)="resolved($event)" siteKey="6Lfc9twZAAAAAAjwYSzByar-hPR8o8rzi9mXE_FI"></re-captcha>
+        </div>-->
+  
+       <!-- <br>
+        <button  style="margin-top: 2rem;" class="btn btn-block"   mat-raised-button color="primary"  (click)="EntrarSinCaptcha()">Habilitar/Desabilitar</button>
+  -->
+        <button  style="margin-top: 2rem;" class="btn btn-block"   mat-raised-button color="primary"  (click)="Ingresar()">Ingresar</button>
+      
+      </form>
+    
+    
+      <br>
+      <!-- <mat-divider></mat-divider> -->
+      <br>
+      <h3>¿No tenés usuario? <a href="/registro">Registrate</a></h3>
+    </mat-card>
+  
+  </div>
+  
