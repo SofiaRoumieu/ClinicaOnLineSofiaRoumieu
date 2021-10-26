@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-menu',
@@ -9,7 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class MenuComponent implements OnInit {
 
-    estado_activo:boolean;
+    estado_activo:boolean=false;
     mail_usuario?:string; 
     user:any;
     constructor(private authSv: AuthService, private router: Router) { }
@@ -21,9 +22,10 @@ export class MenuComponent implements OnInit {
           this.user = data;
           if(this.user){
             this.estado_activo = true;
-            this.mail_usuario='sofia@sofia';
+            this.mail_usuario=this.authSv.getCurrentUserMail();
           }
-          else{ this.estado_activo = false;
+          else{ 
+            this.estado_activo = false;
             this.mail_usuario='';
           }
   

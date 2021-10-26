@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from 'src/app/services/api.service';
+import Swal from 'sweetalert2';
+import { Usuario } from '../../clases/usuario';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { firestore } from 'firebase';
 
 @Component({
   selector: 'app-bienvenido',
@@ -8,27 +13,46 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class BienvenidoComponent implements OnInit {
 
-  public nombre ;
-  public foto;
-  public url;
-  public seguidores;
-  public repositorios;
-  public seguidos;
+  tipoUsuario: string;
+  seleccionado:boolean;
+  tipoAccion:string;
+  
+  constructor(private router: Router,
+    private authService: AuthService,
+    private db: AngularFirestore) { }
 
-  constructor(private apiService: ApiService) { }
-
+ 
   ngOnInit(): void {
-    let name: string;
-    let bandera: string;
-    this.apiService.ObtenerGit().subscribe((misDatos: any) => {
-      this.nombre=misDatos.login;
-      this.foto= misDatos.avatar_url;
-      this.url=misDatos.url;
-      this.seguidores=misDatos.followers;
-      this.seguidos=misDatos.following;
-      this.repositorios=misDatos.public_repos;
-      console.log(this.nombre + ', '+this.foto+', '+this.seguidores );
-    }, error=>{console.log(error);})
+    this.seleccionado=false;
+    this.authService.getUserByMail(this.authService.getCurrentUserMail()).then(res =>{
+      if(res.length > 0)
+      { 
+         this.tipoUsuario=res[0].rol;
+         console.log(this.tipoUsuario);
+      }
+    }, error=>{
+      Swal.fire({
+      title:'Error',
+      text:'Error al consultar usuario logueado: '+error,
+      icon:'error',
+      confirmButtonText:'Cerrar'
+    });
+    })
+  }
+
+  MostrarComponente(componente:string)
+  {
+    switch(componente){
+      case 'administracionUsuario':
+        this.router.navigate(['/administracionUsuarios']);  
+        break;
+      case 'sacarTurno':
+        this.router.navigate(['/administracionUsuarios']);
+        break;
+      case 'consultarAgenda':
+        this.router.navigate(['/administracionUsuarios']);
+        break;
+    }
   }
 
 }

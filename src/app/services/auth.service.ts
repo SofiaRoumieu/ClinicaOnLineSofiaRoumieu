@@ -4,8 +4,8 @@ import { Usuario } from '../clases/usuario';
 import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import { Router } from '@angular/router';
-//import { ToastrService } from 'ngx-toastr';
-import { AngularFirestore } from '@angular/fire/firestore';
+import Swal from 'sweetalert2';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 
 
@@ -13,15 +13,58 @@ import { AngularFireStorage } from '@angular/fire/storage';
   providedIn: 'root'
 })
 export class AuthService {
+  usuario:any= new Usuario();
+  dbUsersRef:AngularFirestoreCollection<any>;
 
   constructor(private afAuth: AngularFireAuth,
     private router: Router,
     private db: AngularFirestore,
-    public storage:AngularFireStorage,
-    /*private toas:ToastrService*/) { }
+    public storage:AngularFireStorage) {
+      this.dbUsersRef=this.db.collection("usuarios");
+     }
 
   public async signIn(email:string, pass:string) {
-    return this.afAuth.signInWithEmailAndPassword(email, pass);
+    return new Promise((resolve, reject) => {
+      this.afAuth.signInWithEmailAndPassword(email, pass).then(user => {
+        if(user.user.emailVerified)
+        {
+          resolve(user);
+          this.router.navigate(['/home']);
+        }
+        else
+        { 
+          if(user.user.email == "admin@admin.com")
+          {
+          this.router.navigate(['/home']);
+
+          }
+          else
+          {
+            console.log("mail no verificado");
+            Swal.fire({
+              title:'Cuenta no verificada',
+              text:'Ingrese a su correo electrónico y verifique su cuenta.',
+              icon:'error',
+              confirmButtonText:'Cerrar'
+            });//.then(()=>{
+            //this.router.navigate(['/verificacion']);
+            
+
+          }
+        }
+      })
+      .catch(err => {
+        reject(err);
+        Swal.fire({
+          title:'Error al iniciar sesión',
+          text:'Error: '+ err,
+          icon:'error',
+          confirmButtonText:'Cerrar'
+        });
+      });
+
+    })
+  
   }
 
   public async register(usuario: Usuario) {
@@ -60,8 +103,7 @@ export class AuthService {
          email: usuario.email,
          rol: usuario.tipo,
          dni:usuario.dni,
-         estado:1,
-         edad:usuario.edad,
+         obraSocial:usuario.obraSocial,
          img1: usuario.img1,
          img2: usuario.img2
        })
@@ -76,7 +118,12 @@ export class AuthService {
      })
      .catch(function (error) {
        console.error("Error: ", error);
-       //ad.toas.error(error,"Error");
+       Swal.fire({
+        title:'Error al registrar paciente',
+        text:'Error: '+ error,
+        icon:'error',
+        confirmButtonText:'Cerrar'
+      });
      });
      
      
@@ -99,9 +146,19 @@ export class AuthService {
 
        ad.router.navigate(['/verificacion']);                  
        ad.sendVerificationEmail().then(res =>{
-        console.log("Se envio bien el mail");
+        Swal.fire({
+          title:'E-mail de verificación enviado',
+          text:'Busque el correo enviado en su casilla y haga clic en el enlace.',
+          icon:'success',
+          confirmButtonText:'Cerrar'
+        });
       }).catch(error =>{
-        console.log("No llega el mail");
+        Swal.fire({
+          title:'Error al enviar e-mail',
+          text:'El correo de verificación no fue enviado',
+          icon:'error',
+          confirmButtonText:'Cerrar'
+        });
       });  
 
        dbRef.collection('usuarios').doc(credencial.user.uid).set({
@@ -113,7 +170,7 @@ export class AuthService {
          dni:usuario.dni,
          estado:1,
          img1: usuario.img1,
-         img2: usuario.img2
+         especialidades:especialidades
        })
        .then(function (docRef) {
          
@@ -126,7 +183,12 @@ export class AuthService {
      })
      .catch(function (error) {
        console.error("Error: ", error);
-       //ad.toas.error(error,"Error");
+       Swal.fire({
+        title:'Error al registrar usuario',
+        text:'Error: '+ error,
+        icon:'error',
+        confirmButtonText:'Cerrar'
+      });
      });
      
      
@@ -207,11 +269,40 @@ export class AuthService {
       }
   
   
-  
-
-    subirArchivo(nombreArchivo: string, datos: any,metadata:any) {
+  subirArchivo(nombreArchivo: string, datos: any,metadata:any) {
       return this.storage.upload(nombreArchivo, datos, {customMetadata:metadata });
     }
-  
 
+    async getUserByMail(email: string) {
+
+      let usrsRef = await this.dbUsersRef.ref.where("email", "==", email).get();
+      let listado:Array<any> = new Array<any>();
+      console.log(usrsRef);
+      usrsRef.docs.map(function(x){
+          listado.push(x.data());
+      });
+      return listado;
+    }
+
+    getCurrentUserMail(): string {
+      return firebase.auth().currentUser.email;
+    }
+
+    TraerTodos(){
+      return this.db.collection('usuarios').valueChanges();
+    }
+  
+    HabilitarProfesional(profesioral:Usuario){
+      console.log("llego al servicio"+ profesioral);
+      console.log(profesioral.email);
+      this.getUserByMail(profesioral.email).then(res=>{
+        if(res.length > 0){ 
+          this.db.collection('usuarios').doc(res[0].uid).update({
+            'estado' :0
+          })
+        }
+      })
+    }
+  
+    
 }

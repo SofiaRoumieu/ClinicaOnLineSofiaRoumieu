@@ -12,4 +12,5 @@ export class Usuario {
     rol:string;
     edad:number;
     obraSocial:string;
+    especialidades:any;
 }

@@ -3,7 +3,7 @@ import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/fo
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Usuario } from 'src/app/clases/usuario';
 import { AuthService } from 'src/app/services/auth.service';
-//import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 import { DataService } from '../../services/data.service';
 
 
@@ -20,7 +20,8 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./registro.component.css']
 })
 export class RegistroComponent implements OnInit {
-
+  seleccionado:boolean;
+  tipoIngreso:string="";
   emailClass:'';
   claveClass:'';
   email:string;
@@ -30,6 +31,8 @@ export class RegistroComponent implements OnInit {
   img2:any;
   lista:Array<any>;
   especialidades:Array<any> = new Array<any>();
+  nuevaEspecialidad:string="";
+  tipoUsuario:string;
 
   constructor(private auth:AuthService, private data:DataService /*, private toastr:ToastrService*/ ) { }
   
@@ -41,17 +44,21 @@ export class RegistroComponent implements OnInit {
   matcher = new MyErrorStateMatcher();
 
   Entrar(){
-    this.cargarEspecialidades();
+    console.log("tipo ingreso funcione entrar"+this.tipoIngreso);
     if(this.validacion())
     {
-        if(this.usuario.tipo == "profesional")
+        if(this.tipoIngreso == "paciente")
         {
-          this.auth.registerProfesional(this.usuario,this.lista,this.img1);
+          console.log("paso previo a registro"+this.usuario);
+          this.usuario.tipo="paciente";
+          this.auth.registerPaciente(this.usuario,this.img1,this.img2);
+          
         }
         else
         {
-    
-          this.auth.registerPaciente(this.usuario,this.img1,this.img2);
+          this.cargarEspecialidades();
+          this.usuario.tipo="profesional";
+          this.auth.registerProfesional(this.usuario,this.lista,this.img1);
         }
 
     }
@@ -60,35 +67,62 @@ export class RegistroComponent implements OnInit {
 
   validacion()
   {  
-    if(this.usuario.nombre != null && this.usuario.apellido !=null && this.usuario.email !=null && this.usuario.dni !=null && this.usuario.pass !=null && this.clave !=null && this.usuario.tipo)
+    console.log(this.usuario);
+    if(this.usuario.nombre != null && this.usuario.apellido !=null && this.usuario.email !=null && this.usuario.dni !=null && this.usuario.pass !=null && this.clave !=null)
     {
       if(this.usuario.pass == this.clave)
       {
-        if(this.usuario.tipo=="paciente")
+        if(this.tipoIngreso=="paciente")
         {
-          if(this.usuario.img1 != null && this.usuario.img2 !=null)
+          if(this.usuario.img1 == null || this.usuario.img2 ==null)
           {
-
-            return true;
-          }
-          else
-          {
-            //this.toastr.error("Las dos imagenes son Requeridas", "ERROR");
+            Swal.fire({
+              title:'Error en la carga',
+              text:'Debe cargar dos fotos',
+              icon:'error',
+              confirmButtonText:'Cerrar'
+            });
             return false;
-
           }
         }
-        else
+        else {
+          if(this.usuario.img1 == null)
+          {
+            Swal.fire({
+              title:'Error en la carga',
+              text:'Debe cargar una foto',
+              icon:'error',
+              confirmButtonText:'Cerrar'
+            });
+            return false;
+          }
+
+          if(this.usuario.edad<18){
+            Swal.fire({
+              title:'Error en la carga',
+              text:'El usuario no puede ser menor de edad',
+              icon:'error',
+              confirmButtonText:'Cerrar'
+            });
+            return false;
+          }
+        }
+
+        if(this.tipoIngreso=="profesional")
         {
+          
           if(this.lista.length>0){
-            
             console.info(this.lista);
             return true;
-
           }
           else
           { 
-            //this.toastr.error("Deve seleccionar almenos una especialidad", "ERROR");
+            Swal.fire({
+              title:'Error en la carga',
+              text:'Debe seleccionar al menos una especialidad',
+              icon:'error',
+              confirmButtonText:'Cerrar'
+            });
             return false;
           }
         }
@@ -96,7 +130,12 @@ export class RegistroComponent implements OnInit {
       }
       else
       {
-       // this.toastr.error("Las contraseñas no Coinciden", "ERROR");
+        Swal.fire({
+          title:'Error en la carga',
+          text:'Las contraseñas no coinciden',
+          icon:'error',
+          confirmButtonText:'Cerrar'
+        });
         return false;
 
       }
@@ -104,10 +143,15 @@ export class RegistroComponent implements OnInit {
     }
     else
     { 
-      //this.toastr.error("Datos incompletos o inválidos", "ERROR");
+      Swal.fire({
+        title:'Error en la carga',
+        text:'Datos incompletos o inválidos',
+        icon:'error',
+        confirmButtonText:'Cerrar'
+      });
       return false;
     }
-  
+    return true;
   }
 
   cargarEspecialidades(){
@@ -117,7 +161,8 @@ export class RegistroComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+      this.seleccionado=false;
+      this.tipoIngreso="";
       this.data.getEspecialidades().subscribe( res =>{
             res.forEach(item =>{
               
@@ -129,6 +174,21 @@ export class RegistroComponent implements OnInit {
 
             console.info(this.especialidades);
       }) 
+
+      this.auth.getUserByMail(this.auth.getCurrentUserMail()).then(res =>{
+        if(res.length > 0)
+        { 
+           this.tipoUsuario=res[0].rol;
+           console.log(this.tipoUsuario);
+        }
+      }, error=>{
+        Swal.fire({
+        title:'Error',
+        text:'Error al consultar usuario logueado: '+error,
+        icon:'error',
+        confirmButtonText:'Cerrar'
+      });
+      })
 
 
   }

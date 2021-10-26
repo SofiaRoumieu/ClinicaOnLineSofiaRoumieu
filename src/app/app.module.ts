@@ -16,6 +16,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox'; 
 import { HttpClientModule } from '@angular/common/http';
 import { MatSelectModule } from '@angular/material/select';
+//import { MatDivider} from '@angular/material/divider';
 
 // FIREBASE
 import { AngularFireModule } from '@angular/fire';
@@ -30,6 +31,7 @@ import { AltaProductoComponent } from './Componentes/alta-producto/alta-producto
 import { TablaPaisesComponent } from './Componentes/tabla-paises/tabla-paises.component';
 import { RegistroComponent } from './Componentes/registro/registro.component';
 import { VerificacionCuentaComponent } from './Componentes/verificacion-cuenta/verificacion-cuenta.component';
+import { AdministracionUsuarioComponent } from './Componentes/administracion-usuario/administracion-usuario.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,8 @@ import { VerificacionCuentaComponent } from './Componentes/verificacion-cuenta/v
     AltaProductoComponent,
     TablaPaisesComponent,
     RegistroComponent,
-    VerificacionCuentaComponent
+    VerificacionCuentaComponent,
+    AdministracionUsuarioComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +60,7 @@ import { VerificacionCuentaComponent } from './Componentes/verificacion-cuenta/v
     MatSelectModule,
     MatCheckboxModule,
     HttpClientModule,
+    //MatDivider,
     AngularFireModule.initializeApp(firebase),
     AngularFirestoreModule, // firestore
     AngularFireAuthModule // auth

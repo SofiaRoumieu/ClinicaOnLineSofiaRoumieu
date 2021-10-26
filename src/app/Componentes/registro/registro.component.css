@@ -4,40 +4,50 @@ mat-card {
      text-align: left;
      
  }
- .container {
-     margin-top: 1rem;
+ .containerInicioRegistro {
+     margin-top: 5rem;
      display: flex;
      z-index:999;
      flex-direction: row;
      flex-wrap: wrap;
     justify-content: center;
-     border-radius: 1rem;
+     border-radius: 100%;
      background-color: white;
      -webkit-box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
  -moz-box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
  box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
+ text-align: center;
+ width: 40%;
  
  }
+ .container{
+    margin-top: 1rem;
+    display: flex;
+    z-index:999;
+    flex-direction: row;
+    flex-wrap: wrap;
+   justify-content: center;
+    border-radius: 1rem;
+    background-color: white;
+    -webkit-box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
+-moz-box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
+box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
+
+}
  .contenedor{
     
      display: flex;
      flex-direction: column;
      flex-wrap: wrap;
-     height: 100%;
-     /*background-image:url('../../../assets/fondo.jpg');*/
- 
-    
- 
+     height: 70%;
+     align-items: center;
  }
+
  form{
      padding: 1rem;
- 
-    
-     
- }
+  }
  
  .divFoto{
- 
      display: flex;
      flex-direction: column;
      width: 50%;
@@ -56,8 +66,8 @@ mat-card {
      justify-content: center;
      text-align: center;
      align-content: flex-start;
-    
- }
+}
+
  .custom-file{
      border: solid 1px black;
      display: inline-block;
@@ -79,3 +89,11 @@ mat-card {
      font-weight: lighter;
      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
  }
+ .divTitulo{
+    margin: 1rem;
+    text-align: center;
+}
+.containerInicioRegistro:hover {
+    z-index: 1000;
+    transform: scale(1.1);
+  }

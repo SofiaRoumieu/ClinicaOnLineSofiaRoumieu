@@ -34,3 +34,20 @@ form{
    
     
 }
+
+.mat-fab-bottom-right {
+    display: grid;
+    position: fixed !important;
+    right: 20px;
+    bottom: 20px;
+  }
+
+  .fab-button:hover {
+    z-index: 1000;
+    transform: scale(2);
+  }
+  .botonUsuarios {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }

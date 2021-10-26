@@ -1,0 +1,115 @@
+<div class="row mt-4 mb-4">
+    <div class="col-2"></div>
+    <div class="col-2">
+        <button class="btn btn-primary" [class.btn-secondary]="solapaAMostrar !== 'admin'"
+        [class.btn-primary]="solapaAMostrar == 'admin'"  (click)="solapaAMostrar='admin'">Ver Administradores</button>
+    </div>
+    <div class="col-2">
+        <button class="btn btn-primary" [class.btn-secondary]="solapaAMostrar !== 'profesionales'"
+        [class.btn-primary]="solapaAMostrar == 'profesionales'" (click)="solapaAMostrar='profesionales'">Ver Profesionales</button>
+    </div>
+    <div class="col-2">
+        <button class="btn btn-primary" [class.btn-secondary]="solapaAMostrar !== 'pacientes'"
+        [class.btn-primary]="solapaAMostrar == 'pacientes'" (click)="solapaAMostrar='pacientes'">Ver Pacientes</button>
+    </div>
+    <div class="col-2"></div>
+
+    <div class="col-2 fab-button">
+              <button mat-mini-fab class="botonUsuarios" title="Registrar Usuario" style="border-radius: 100%; background-image: url(../../../assets/nuevoUsuario.png);" (click)="NuevoUsuario()"></button>
+    </div>
+</div>
+<div class="contenedor">
+    <mat-card class="container ld ld-blur-in" >
+        <div *ngIf="solapaAMostrar=='pacientes'">
+            <h4>Pacientes</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">DNI</th>
+                        <th scope="col">Edad</th>
+                        <th scope="col">E-Mail</th>
+                        <th scope="col">Obra Social</th>
+                        <th scope="col">Foto de Perfil</th>
+                        <th scope="col">Foto de Perfil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let paciente of pacientes">
+                        <td>{{paciente.nombre}}</td>
+                        <td>{{paciente.apellido}}</td>
+                        <td>{{paciente.dni}}</td>
+                        <td>{{paciente.edad}}</td>
+                        <td>{{paciente.email}}</td>
+                        <td>{{paciente.obraSocial}}</td>
+                        <td><img class="fotoTabla" [src]="paciente.img1"></td>
+                        <td><img class="fotoTabla" [src]="paciente.img2"></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div *ngIf="solapaAMostrar=='profesionales'">
+            <h4>Profesionales</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">DNI</th>
+                        <th scope="col">Edad</th>
+                        <th scope="col">E-mail</th>
+                        <th scope="col">Especialidades</th>
+                        <th scope="col">Foto de perfil</th>
+                        <th scope="col">Habilitar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let profesional of profesionales">
+                        <td>{{profesional.nombre}}</td>
+                        <td>{{profesional.apellido}}</td>
+                        <td>{{profesional.dni}}</td>
+                        <td>{{profesional.edad}}</td>
+                        <td>{{profesional.email}}</td>
+                        <td>{{profesional.especialidades}}</td>
+                        <td><img class="fotoTabla" [src]="profesional.img1"></td>
+                        <td *ngIf="profesional.estado!=1" class="text-center" style="color: green;"><!--<img style="max-width: 30px;max-height: 30px;" src="../../../assets/check.png">-->Habilitado</td>
+                        <td *ngIf="profesional.estado==1"><button class="btn btn-primary" (click)="HabilitarProfesional(profesional)">Verificar</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div *ngIf="solapaAMostrar=='admin'">
+            <h4>Administradores</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">DNI</th>
+                        <th scope="col">Edad</th>
+                        <th scope="col">E-Mail</th>
+                        <th scope="col">Foto de perfil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let administrador of administradores">
+                        <td>{{administrador.nombre}}</td>
+                        <td>{{administrador.apellido}}</td>
+                        <td>{{administrador.dni}}</td>
+                        <td>{{administrador.edad}}</td>
+                        <td>{{administrador.email}}</td>
+                        <td><img class="fotoTabla" [src]="administrador.img1"></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        
+    </mat-card>
+    
+</div>
+
