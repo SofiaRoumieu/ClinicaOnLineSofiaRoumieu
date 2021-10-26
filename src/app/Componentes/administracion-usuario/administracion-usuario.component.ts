@@ -44,31 +44,10 @@ export class AdministracionUsuarioComponent implements OnInit {
     this.solapaAMostrar="admin";
   }
 
-
- /* refreshPacientes() {
-    this.pacientesPag = this.pacientes
-      .map((country, i) => ({id: i + 1, ...country}))
-      .slice((this.pagePacientes - 1) * this.pageSize, (this.pagePacientes - 1) * this.pageSize + this.pageSize);
-  }
-
-  refreshEspecialistas() {
-    this.profesionalesPag = this.profesionales
-      .map((country, i) => ({id: i + 1, ...country}))
-      .slice((this.pageEspecialistas - 1) * this.pageSize, (this.pageEspecialistas - 1) * this.pageSize + this.pageSize);
-  }
-
-  refreshAdministradores() {
-    this.administradoresPag = this.administradores
-      .map((country, i) => ({id: i + 1, ...country}))
-      .slice((this.pageAdministradores - 1) * this.pageSize, (this.pageAdministradores - 1) * this.pageSize + this.pageSize);
-  }*/
-
   HabilitarProfesional(profesional){
     console.log(profesional);
     this.dataSvc.HabilitarProfesional(profesional);
     profesional.estado=0;
-      
-    
   }
 
   NuevoUsuario(){

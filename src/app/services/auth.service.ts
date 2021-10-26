@@ -89,7 +89,7 @@ export class AuthService {
        this.afAuth.createUserWithEmailAndPassword(usuario.email, usuario.pass)
      .then(function(credencial) {
 
-       ad.router.navigate(['/verificacion']);                  
+       ad.router.navigate(['/bienvenidos']);                  
        ad.sendVerificationEmail().then(res =>{
         console.log("Se envio bien el mail");
       }).catch(error =>{
@@ -144,7 +144,7 @@ export class AuthService {
        this.afAuth.createUserWithEmailAndPassword(usuario.email, usuario.pass)
      .then(function(credencial) {
 
-       ad.router.navigate(['/verificacion']);                  
+       ad.router.navigate(['/bienvenidos']);                  
        ad.sendVerificationEmail().then(res =>{
         Swal.fire({
           title:'E-mail de verificación enviado',
