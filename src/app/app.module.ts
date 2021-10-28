@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './Componentes/login/login.component';
 import { BienvenidoComponent } from './Componentes/bienvenido/bienvenido.component';
@@ -13,10 +14,15 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
+import {MatStepperModule} from '@angular/material/stepper';
 import { MatCheckboxModule } from '@angular/material/checkbox'; 
 import { HttpClientModule } from '@angular/common/http';
 import { MatSelectModule } from '@angular/material/select';
 //import { MatDivider} from '@angular/material/divider';
+
+//capcha
+import { NgxCaptchaModule } from 'ngx-captcha';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 // FIREBASE
 import { AngularFireModule } from '@angular/fire';
@@ -32,6 +38,13 @@ import { TablaPaisesComponent } from './Componentes/tabla-paises/tabla-paises.co
 import { RegistroComponent } from './Componentes/registro/registro.component';
 import { VerificacionCuentaComponent } from './Componentes/verificacion-cuenta/verificacion-cuenta.component';
 import { AdministracionUsuarioComponent } from './Componentes/administracion-usuario/administracion-usuario.component';
+import { NuevoTurnoComponent } from './Componentes/nuevo-turno/nuevo-turno.component';
+import { FechaPipe } from './pipes/fecha.pipe';
+import { ListaEspecialidadesComponent } from './Componentes/lista-especialidades/lista-especialidades.component';
+import { ListaProfesionalesComponent } from './Componentes/lista-profesionales/lista-profesionales.component';
+import { ListaFechaHoraComponent } from './Componentes/lista-fecha-hora/lista-fecha-hora.component';
+import { SortTurnosPipe } from './pipes/sort-turnos.pipe';
+import { MesesPipe } from './pipes/meses.pipe';
 
 @NgModule({
   declarations: [
@@ -44,11 +57,20 @@ import { AdministracionUsuarioComponent } from './Componentes/administracion-usu
     TablaPaisesComponent,
     RegistroComponent,
     VerificacionCuentaComponent,
-    AdministracionUsuarioComponent
+    AdministracionUsuarioComponent,
+    NuevoTurnoComponent,
+    FechaPipe,
+    ListaEspecialidadesComponent,
+    ListaProfesionalesComponent,
+    ListaFechaHoraComponent,
+    SortTurnosPipe,
+    MesesPipe
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    CommonModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatInputModule,
@@ -60,11 +82,14 @@ import { AdministracionUsuarioComponent } from './Componentes/administracion-usu
     MatSelectModule,
     MatCheckboxModule,
     HttpClientModule,
+    MatStepperModule,
     //MatDivider,
     AngularFireModule.initializeApp(firebase),
     AngularFirestoreModule, // firestore
-    AngularFireAuthModule // auth
+    AngularFireAuthModule, // auth
     //AngularFireStorageModule
+    NgxCaptchaModule,
+    RecaptchaModule
   ],
   providers: [],
   bootstrap: [AppComponent]

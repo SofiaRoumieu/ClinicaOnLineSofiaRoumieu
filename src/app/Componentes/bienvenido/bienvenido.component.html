@@ -12,4 +12,19 @@
       <img src="../../../assets/calendario.png" alt="Avatar" class="avatar" style="max-height: 90%;" >
     </div>
   </mat-card>
+  <mat-card *ngIf="tipoUsuario=='paciente'" class="containerInicioRegistro" title="Mis Turnos" (click)="MostrarComponente('misTurnos')">
+    <div  class="imgcontainer">
+      <img src="../../../assets/portapapeles.png" alt="Avatar" class="avatar" style="max-height: 90%;"  >
+    </div>
+  </mat-card>
+  <mat-card *ngIf="tipoUsuario=='paciente'" class="containerInicioRegistro" title="Agendar Turnos" (click)="MostrarComponente('nuevoTurno')">
+    <div  class="imgcontainer">
+      <img src="../../../assets/calendario.png" alt="Avatar" class="avatar" style="max-height: 90%;" >
+    </div>
+  </mat-card>
+  <mat-card *ngIf="tipoUsuario=='profesional'" class="containerInicioRegistro" title="Mis Turnos" (click)="MostrarComponente('misTurnos')">
+    <div  class="imgcontainer">
+      <img src="../../../assets/busqueda.png" alt="Avatar" class="avatar" style="max-height: 90%;"  >
+    </div>
+  </mat-card>
 </div>

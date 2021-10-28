@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { Turno } from '../clases/turno';
 
 
 @Injectable({
@@ -70,6 +71,7 @@ export class AuthService {
   public async register(usuario: Usuario) {
     return this.afAuth.createUserWithEmailAndPassword(usuario.email, usuario.pass);
   }
+  
   isLoggedIn() {
     return this.afAuth.authState;
   }
@@ -273,6 +275,7 @@ export class AuthService {
       return this.storage.upload(nombreArchivo, datos, {customMetadata:metadata });
     }
 
+    //mover a data.service
     async getUserByMail(email: string) {
 
       let usrsRef = await this.dbUsersRef.ref.where("email", "==", email).get();
@@ -282,6 +285,22 @@ export class AuthService {
           listado.push(x.data());
       });
       return listado;
+    }
+
+    getUserUid()
+    {  
+      return new Promise((resolve, reject) => {
+        this.afAuth.onAuthStateChanged(function(user){
+            if(user)
+            {
+              resolve(user.uid)
+            }
+            else
+            {
+              resolve("0")
+            }
+        })
+      })
     }
 
     getCurrentUserMail(): string {
@@ -304,5 +323,44 @@ export class AuthService {
       })
     }
   
+    async registerTurnos(turno:Turno){
+      return new Promise((resolve, reject) =>{
+        this.db.collection("turnos").ref.orderBy('id',"desc").limit(1).get().then(res=>{    
+          res.forEach(a=>{
+            let ida =  Number(a.id) + 1;
+            this.db.collection("turnos").doc(ida.toString()).set({
+             
+             paciente:turno.paciente,
+             profesional:turno.profesional,
+             //fecha: turno.fecha.getFullYear() + "-" + (turno.fecha.getMonth()+1) + "-" + turno.fecha.getDate(),
+             fecha:turno.fecha,
+             id:ida,
+             hora:turno.hora,
+             estado:turno.estado,
+             especialidad:turno.especialidad,
+             comentario:turno.comentario
+              
+            }).then(res=>{
+              
+              resolve(true);
+
+            }).catch(error=>{
+
+               reject(error);
+               Swal.fire({
+                title:'Error',
+                text:'Error al registrar el turno: '+ error,
+                icon:'error',
+                confirmButtonText:'Cerrar'
+              });
+            })
+
+          })
+        }); 
+
+      });
+
+    }
+
     
 }

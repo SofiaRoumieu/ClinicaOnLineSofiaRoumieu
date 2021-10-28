@@ -33,8 +33,9 @@ export class RegistroComponent implements OnInit {
   especialidades:Array<any> = new Array<any>();
   nuevaEspecialidad:string="";
   tipoUsuario:string;
+  recaptcha: any;
 
-  constructor(private auth:AuthService, private data:DataService /*, private toastr:ToastrService*/ ) { }
+  constructor(private auth:AuthService, private data:DataService) { }
   
   emailFormControl = new FormControl('', [
     Validators.required,
@@ -44,25 +45,29 @@ export class RegistroComponent implements OnInit {
   matcher = new MyErrorStateMatcher();
 
   Entrar(){
-    console.log("tipo ingreso funcione entrar"+this.tipoIngreso);
+    this.cargarEspecialidades();
     if(this.validacion())
     {
+      
         if(this.tipoIngreso == "paciente")
         {
-          console.log("paso previo a registro"+this.usuario);
           this.usuario.tipo="paciente";
           this.auth.registerPaciente(this.usuario,this.img1,this.img2);
           
         }
         else
         {
-          this.cargarEspecialidades();
+          
           this.usuario.tipo="profesional";
           this.auth.registerProfesional(this.usuario,this.lista,this.img1);
         }
 
     }
      
+  }
+  
+  resolved(captchaResponse: any) {
+    this.recaptcha = captchaResponse;
   }
 
   validacion()
@@ -155,8 +160,12 @@ export class RegistroComponent implements OnInit {
   }
 
   cargarEspecialidades(){
-
     this.lista = (this.especialidades.filter(res => res.completed == true )).map(res => res.name);
+    console.log("nueva especialidad::"+ this.nuevaEspecialidad);
+    if(this.nuevaEspecialidad!='' && this.especialidades!=undefined){
+      this.lista.push(this.nuevaEspecialidad);
+      this.data.AgregarEspecialidad({name: this.nuevaEspecialidad, completed: false, color: 'primary'});
+    }
     console.info(this.lista);
   }
 
@@ -164,16 +173,17 @@ export class RegistroComponent implements OnInit {
       this.seleccionado=false;
       this.tipoIngreso="";
       this.data.getEspecialidades().subscribe( res =>{
-            res.forEach(item =>{
-              
-              let objet = {name: item.nombre, completed: false, color: 'primary'} 
+        res.forEach(item =>{
+          
+          let objet = {name: item.nombre, completed: false, color: 'primary'} 
 
-              this.especialidades.push(objet);
-                
-            })
+          this.especialidades.push(objet);
+            
+        })
 
-            console.info(this.especialidades);
+        console.info(this.especialidades);
       }) 
+
 
       this.auth.getUserByMail(this.auth.getCurrentUserMail()).then(res =>{
         if(res.length > 0)

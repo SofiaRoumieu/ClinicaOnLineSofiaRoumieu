@@ -1,0 +1,22 @@
+<div class="div1" *ngIf="listado">
+    <table class="table table-hover table-bordered animated fadeIn faster ld ld-slide-ttb-in">
+        <thead>
+          <tr class="bg-primary" style="color: white;">
+            <th>Fecha</th>
+            <th>Mes</th>
+            <th>Día </th>
+            <th>Hora</th>
+          </tr>
+        </thead>
+        <tbody >
+          <tr *ngFor="let fecha of listado | sortTurnos  let i = index" (click)="seleccionarFecha(fecha)">
+            <td>{{fecha.numero}} </td>
+            <td>{{fecha.mes |meses}} </td>
+            <td>{{fecha.nombre}} </td>
+            <td>{{fecha.hora}} </td>
+
+          </tr>     
+        </tbody>
+      </table>
+  </div>
+

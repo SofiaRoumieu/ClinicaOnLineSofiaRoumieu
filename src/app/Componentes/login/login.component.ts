@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   email:string;
   clave:string;
   recaptcha: any=false;
-  siteKey:string;
+  //siteKey:string;
   desa:boolean = false;
   estadoUsuario:number;
   rol:string;

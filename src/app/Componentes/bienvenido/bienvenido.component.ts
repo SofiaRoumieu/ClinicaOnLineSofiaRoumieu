@@ -46,9 +46,12 @@ export class BienvenidoComponent implements OnInit {
       case 'administracionUsuario':
         this.router.navigate(['/administracionUsuarios']);  
         break;
-      case 'sacarTurno':
-        this.router.navigate(['/administracionUsuarios']);
+      case 'nuevoTurno':
+        this.router.navigate(['/nuevoTurno']);
         break;
+      case 'misTurnos':
+        this.router.navigate(['/administracionUsuarios']);
+      break;
       case 'consultarAgenda':
         this.router.navigate(['/administracionUsuarios']);
         break;

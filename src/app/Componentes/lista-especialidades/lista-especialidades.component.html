@@ -1,0 +1,27 @@
+<div class="div1">
+    
+    <table class="table table-hover table-bordered animated fadeIn faster ld ld-slide-ttb-in">
+        <thead>
+          <tr class="bg-primary" style="color: white;">
+            <th>Especialidades</th>
+            <!-- <th>Seleccionar</th> -->
+           
+           
+          </tr>
+        </thead>
+        <tbody >
+          <tr  *ngFor="let especialidad of listado  let i=index" (click)="tomarEspecialidad(especialidad)">
+            <td  id="{{i}}" [ngStyle]="{'background-color': col}" >{{especialidad.nombre}} 
+            </td>
+            <!-- <td>
+              <button [disabled]="dis" (click)="seleccionado(i)" class="btn btn-success">select</button>
+
+            </td> -->
+           
+           
+          </tr>     
+        
+        </tbody>
+      </table>
+      
+    </div>

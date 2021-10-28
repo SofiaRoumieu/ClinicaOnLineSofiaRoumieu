@@ -13,4 +13,10 @@ export class Usuario {
     edad:number;
     obraSocial:string;
     especialidades:any;
+    atencion:Array<any>;
+
+    constructor(){
+        this.especialidades=[];
+        this.atencion=[];
+    }
 }
