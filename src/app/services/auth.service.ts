@@ -335,7 +335,6 @@ export class AuthService {
              
              paciente:turno.paciente,
              profesional:turno.profesional,
-             //fecha: turno.fecha.getFullYear() + "-" + (turno.fecha.getMonth()+1) + "-" + turno.fecha.getDate(),
              fecha:turno.fecha,
              id:ida,
              hora:turno.hora,
@@ -365,5 +364,13 @@ export class AuthService {
 
     }
 
+    updateEstadoTurno(turno:Turno,estado:number)
+    { 
+      return  this.db.collection('turnos').doc(turno.id.toString()).update({
+        estado: estado,
+        
+        }) 
+
+    }
     
 }
