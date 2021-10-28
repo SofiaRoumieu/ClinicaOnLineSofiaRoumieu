@@ -164,7 +164,7 @@ export class RegistroComponent implements OnInit {
     console.log("nueva especialidad::"+ this.nuevaEspecialidad);
     if(this.nuevaEspecialidad!='' && this.especialidades!=undefined){
       this.lista.push(this.nuevaEspecialidad);
-      this.data.AgregarEspecialidad({name: this.nuevaEspecialidad, completed: false, color: 'primary'});
+      this.data.AgregarEspecialidad({nombre: this.nuevaEspecialidad, completed: false, color: 'primary'});
     }
     console.info(this.lista);
   }

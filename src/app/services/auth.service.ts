@@ -102,6 +102,7 @@ export class AuthService {
          uid: credencial.user.uid,
          nombre: usuario.nombre,
          apellido: usuario.apellido,
+         edad:usuario.edad,
          email: usuario.email,
          rol: usuario.tipo,
          dni:usuario.dni,
@@ -167,12 +168,14 @@ export class AuthService {
          uid: credencial.user.uid,
          nombre: usuario.nombre,
          apellido: usuario.apellido,
+         edad:usuario.edad,
          email: usuario.email,
          rol: usuario.tipo,
          dni:usuario.dni,
          estado:1,
          img1: usuario.img1,
-         especialidades:especialidades
+         especialidades:especialidades,
+         atencion:usuario.atencion
        })
        .then(function (docRef) {
          

@@ -45,6 +45,7 @@ import { ListaProfesionalesComponent } from './Componentes/lista-profesionales/l
 import { ListaFechaHoraComponent } from './Componentes/lista-fecha-hora/lista-fecha-hora.component';
 import { SortTurnosPipe } from './pipes/sort-turnos.pipe';
 import { MesesPipe } from './pipes/meses.pipe';
+import { ListadoTurnosComponent } from './Componentes/listado-turnos/listado-turnos.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { MesesPipe } from './pipes/meses.pipe';
     ListaProfesionalesComponent,
     ListaFechaHoraComponent,
     SortTurnosPipe,
-    MesesPipe
+    MesesPipe,
+    ListadoTurnosComponent
   ],
   imports: [
     BrowserModule,
