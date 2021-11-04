@@ -2,8 +2,6 @@
 
 La Clinica SR ofrece, a traves de esta aplicación, la posibilidad de gestionar todo lo referido a turnos a traves de la web. De esta manera permite a los usuarios, independientemente del tipo que sea, lograr una independencia absoluta para poder gestionar aquello que le resulte necesario.
 
-Dependiendo del rol del usuario en cuestion, éste podrá gestionar turnos, horarios, usuarios, historias clínicas, emitir reportes y obtener estadísticas que la aplicación generará a partir de la interaccion de cada integrante del sistema.
-
 De uso sencillo e intuitivo, el usuario podra resolver aquello que necesite en cuestion de minutos.
 
 Hay tres roles a los cuales el usuario podrá corresponder. Dichos roles y sus funcionalidades se enumeran a continuación:
@@ -28,37 +26,30 @@ Hay tres roles a los cuales el usuario podrá corresponder. Dichos roles y sus f
 A continuación se describirán las acciones mencionadas anteriormente.
 
 ## Secciones de la aplicación
-- Login
+- <strong>Login</strong>
 
-Aquí el usuario podra ingresar al sistema, o bien generar un nuevo usuario. Es importante remarcar que al generar un nuevo usuario, el sistema enviará un correo de verificación a la casilla de e-mail registrada, sin dicha verificación el usuario no podrá loguearse. Por otro lado, si el usuario que se intenta registrar es de tipo 'Profesional' (médicos, técnicos, etc.) ademas deberá ser habilitado por un usuario de tipo 'Admin'.
+Para poder acceder a las diferentes acciones, el usuario deberá ingresar al sistema completando ciertos datos que acrediten su identidad. En caso de no poseer un usuario registrado,podra generar uno nuevo. Es importante remarcar que al generar un nuevo usuario, el sistema enviará un correo de verificación a la casilla de e-mail registrada, sin dicha verificación el usuario no podrá loguearse. Por otro lado, si el usuario que se intenta registrar es de tipo 'Profesional' (médicos, técnicos, etc.) ademas deberá ser habilitado por un usuario de tipo 'Admin'.
+Desde esta pantalla el usuario podrá ingresar al sistema o dirigirse a la sección de registro, haciendo clic en el link 'Registrate'.
 
-Pantalla Login:
+Pantalla Login
+
 ![image](https://user-images.githubusercontent.com/26911197/140414522-57b3d2d3-b9ca-49ec-896b-e141c572240a.png)
 
-Pantalla Registro:
+- <strong>Registro</strong>
+
+El usuario deberá seleccionar qué tipo de usuario desea registrar, en caso de que el registro lo este queriendo llevar a cabo un Admin, también podrá registrar un nuevo usuario Admin.
+
+La información requerida será basicamente la misma para los tres tipos de usuarios: nombre, apellido, edad, cuil, e-mail, contraseña, foto de perfil. En caso de registrar un Paciente, se pedirá la obra social y una segunda foto de perfil. En caso de registrar un Profesional, se pedirá que se seleccione a qué especialidad/es se dedica.
+
+Pantalla Registro
+
 ![image](https://user-images.githubusercontent.com/26911197/140414672-87329a5d-f964-4674-a617-14f87bace8d5.png)
 
-- Home
+- <strong>Home</strong>
 
-Una vez que el usuario ingresa al sistema, automáticamente será redirigido a la pantalla 'Home', aquí contará con una sección donde se mostrará la información personal del usuario, y por debajo se listaran aquellas opciones que tenga disponible, las cuales variaran segun el rol del usuario ingresado. 
-A continuación se listan los distintos roles y sus respectivas funcionalidades:
+Una vez que el usuario ingresa al sistema, automáticamente será redirigido a la pantalla 'Home', aquí contará con una sección donde se mostrará la información personal del usuario, y por debajo se listaran aquellas acciones que tenga disponible, las cuales variaran segun su rol. 
 
-## Code scaffolding
+Pantalla Home, de un usuario de tipo 'Admin'
+![image](https://user-images.githubusercontent.com/26911197/140418395-5eee827e-0b47-47a7-a21b-1d265ade8f1a.png)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+- <strong>Mis Turnos</strong>
