@@ -1,25 +1,13 @@
-  
-<div class="div1" *ngIf="especialidad">
-    <table class="table table-hover table-bordered animated fadeIn faster ld ld-slide-ttb-in">
-        <thead>
-          <tr class="bg-primary" style="color: white;">
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Dni</th>
-            <th>Email</th>
-       
-          </tr>
-        </thead>
-        <tbody >
-          <tr *ngFor="let profesional of listado; let i = index" (click)="seleccionarProfesional(profesional)">
-            <td>{{profesional.nombre}} </td>
-            <td>{{profesional.apellido}} </td>
-            <td>{{profesional.dni}} </td>
-            <td>{{profesional.email}} </td>
-          </tr>     
-        
-        </tbody>
-      </table>
-  
+<div class="divTitulo">
+  <h2>Seleccione un Profesional:</h2>
+</div>
+<div  class="contenedor">
+  <div *ngFor="let profesional of listado; let i = index" style="text-align: center;">
+    <label class="lblFoto">{{profesional.nombre}} {{profesional.apellido}}</label>
+    <div  background="profesional.img1" (click)="seleccionarProfesional(profesional)" class="containerInicioRegistro"> 
+      <div class="imgcontainer">
+        <img class="botonUsuarios" style="overflow: hidden;" [src]="profesional.img1">
+      </div>
+    </div>
   </div>
-
+</div>  

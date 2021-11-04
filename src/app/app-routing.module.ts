@@ -9,6 +9,7 @@ import { RegistroComponent } from './Componentes/registro/registro.component';
 import { VerificacionCuentaComponent } from './Componentes/verificacion-cuenta/verificacion-cuenta.component';
 import {NuevoTurnoComponent} from './Componentes/nuevo-turno/nuevo-turno.component';
 import { ListadoTurnosComponent } from './Componentes/listado-turnos/listado-turnos.component';
+import { HorariosProfesionalComponent } from './Componentes/horarios-profesional/horarios-profesional.component';
 
 const routes: Routes=[
   {path: 'home', component:BienvenidoComponent},
@@ -18,6 +19,7 @@ const routes: Routes=[
   {path:'registro', component:RegistroComponent},
   {path:'verificacion', component:VerificacionCuentaComponent},
   {path:'administracionUsuarios', component:AdministracionUsuarioComponent},
+  {path:'horariosProfesional', component:HorariosProfesionalComponent},
   {path:'listadoTurnos', component:ListadoTurnosComponent},
   {path:'nuevoTurno', component:NuevoTurnoComponent},
   {path:'',component:LoginComponent},

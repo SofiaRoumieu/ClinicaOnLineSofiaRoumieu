@@ -28,6 +28,29 @@ export class DataService {
     this.dbEspecialidadRef.add({...especialidad});
   }
 
+  async getProfesionales(){
+    let usrsRef = await this.dbUsersRef.ref.where("rol", "==", "profesional").get();
+    let listado:Array<any> = new Array<any>();
+    let profesionales = [];
+    let aux = [];
+    // return usrsRef;
+
+     usrsRef.docs.map(function(x){
+        listado.push(x.data());
+    });
+
+    return listado;
+  }
+
+  async getEspecialidadesByNombre(especialidad:string, listado:Array<any>){
+    let usrsRef = await this.dbEspecialidadRef.ref.where("nombre", "==", especialidad).get();
+    
+     usrsRef.docs.map(function(x){
+        listado.push(x.data());
+    });
+    return listado;
+  }
+
   async getProfesionalesByEspecialidad(especialidad:string)
   { 
     let usrsRef = await this.dbUsersRef.ref.where("rol", "==", "profesional").get();
@@ -62,7 +85,9 @@ export class DataService {
   async TurnoFecha(fecha:string,hora:any)
   {
     let turnos = [];
+    //comentado por sofia, para ver turnos tomados de las fehcas
     let turnosUfs =  await this.dbTurnosRef.ref.where("fecha", "==", fecha).where("hora","==",hora).get();
+    //let turnosUfs =  await this.dbTurnosRef.ref.where("fecha", "==", fecha).get();
       
     turnosUfs.docs.map(function(x){
       turnos.push(x.data());

@@ -5,6 +5,7 @@ import { Usuario } from 'src/app/clases/usuario';
 import { Turno} from 'src/app/clases/turno';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
+import { constructorParametersDownlevelTransform } from '@angular/compiler-cli';
 
 @Component({
   selector: 'app-nuevo-turno',
@@ -12,6 +13,12 @@ import { DataService } from 'src/app/services/data.service';
   styleUrls: ['./nuevo-turno.component.css']
 })
 export class NuevoTurnoComponent implements OnInit {
+  
+  mostrarEspecialidades:boolean;
+  mostrarFechas:boolean;
+  mostrarHoras:boolean;
+  mostrarProfesionales:boolean;
+  mostrarPacientes:Boolean;
 
   isLinear = false;
   firstFormGroup: FormGroup;
@@ -19,18 +26,29 @@ export class NuevoTurnoComponent implements OnInit {
   horaFormGroup: FormGroup;
   turno:Turno = new Turno();
   profesionales:any;
+  especialidades:any;
   today = new Date();
   horas:Array<any> = [];
   usuario:any = new Usuario();
   hora:any;
   turnos:any = new Array<Turno>();
+  diasAtencion:Array<any>=new Array<any>();
+  diasDisponibles:Array<any>=new Array<any>();
   turnosDisponibles:Array<any> = new Array<any>();
    
 
   constructor(private _formBuilder: FormBuilder,private data:DataService,private auth:AuthService) {}
 
   ngOnInit() {
+
+    this.mostrarProfesionales=true;
+    this.mostrarEspecialidades=false;
+    this.mostrarFechas=false;
+    this.mostrarHoras=false;
+    this.turnosDisponibles = [];
+
     this.turnos =this.data.getTurnos();
+    this.cargarProfesionales();
     var uid="0";
     this.auth.getUserUid().then(res =>{
       uid = res.toString();
@@ -53,7 +71,52 @@ export class NuevoTurnoComponent implements OnInit {
       fechaCtrl:['', Validators.required]
     });
   
+    console.log(this.usuario);
+    if(this.usuario.rol=='admin'){
+      this.mostrarPacientes=true;
+      this.mostrarProfesionales=false;
+    }
   }
+
+  cargarProfesionales()
+  { 
+    this.data.getProfesionales().then(res =>{
+      if(res.length > 0)
+      { 
+        this.profesionales = res; 
+      }
+    });
+  }
+
+  tomarProfesional(dato:any)
+  {
+    this.mostrarProfesionales=false;
+    this.especialidades=[];
+    this.turno.profesional = dato;
+    if(dato.especialidades.length>1){
+      this.cargarEspecialidades(dato.especialidades);
+      this.mostrarEspecialidades=true;
+    }
+    else{
+      this.turno.especialidad=dato.especialidades[0];
+      this.mostrarEspecialidades=false;
+     
+      //this.turnosDisponibles = [];
+      this.mostrarFechas=true;
+      this.CargarDiasDisponibles();
+    }
+    
+  }
+
+  cargarEspecialidades(especialidadesProfesional:any){
+    this.especialidades=new Array<any>();
+    especialidadesProfesional.forEach(element => {
+      this.data.getEspecialidadesByNombre(element, this.especialidades).then(res =>{
+        //console.log(this.especialidades);
+      });
+    });
+  }
+
   myFilter = (d: Date | null): boolean => {
     const day = (d || new Date()).getDay();
     let valid:boolean;
@@ -62,47 +125,55 @@ export class NuevoTurnoComponent implements OnInit {
        if(this.transformFech(res.dia) == day)
        {
           valid = true;
-
        }
     })
-    // Prevent Saturday and Sunday from being selected.
 
     return valid && day !== 0;
   }
 
-  Entrar(){  
-    
-    this.turno.paciente = this.usuario;
-
-      this.auth.registerTurnos(this.turno).then(res=>{
-        console.log("Guarda bien el turno");
-        //this.toastr.success("Turno Guardado con Éxito");
-      }).catch(error =>{
-        console.log("Pincho el turno pa");
-        console.info(error);
-      })
-
-    
-     
-  }
-   
+  
   get nombre() {​​ return this.firstFormGroup.get('firstCtrl'); }
   
   
   tomarEspecialidad(dato:any)
   { 
     const {​​ nombre }​​ = this.firstFormGroup.value;
-    // nombre = dato.nombre 
-     this.turno.especialidad = dato.nombre;
+    
+    this.turno.especialidad = dato.nombre;
+    console.log("tomamos especialidad::"+dato.nombre);
+
+    //this.turnosDisponibles = [];
+    this.mostrarEspecialidades=false;
+    this.mostrarFechas=true;
+    this.CargarDiasDisponibles();
+    //this.Fechas();
+    console.log("turnos disponibles::");
+    console.log(this.turnosDisponibles);
+    this.turnosDisponibles.forEach(element => {console.log("recorriendo los turnos"); console.log(element)});
+    //if(this.turnosDisponibles.length>0)
+      this.EvaluarDiasDisponibles();
   }
-  tomarProfesional(dato:any)
-  {
-    console.log("profesional seleccionado:::");
-    console.log(dato);
-    this.turno.profesional = dato;
-    console.log(this.turno.profesional);
-    this.turnosDisponibles = [];
-    this.Fechas();
+
+  EvaluarDiasDisponibles(){
+    console.log("dentro de evaluardisponibles!!");
+    /*for (let i = 0; i < this.turnosDisponibles.length; i++) {
+      console.log("dentro del for")
+      //for (let i = 0; i < this.turnos.length; i++) {
+        console.log(this.turnosDisponibles[i]['fecha']);
+        console.log(this.turnosDisponibles[i]);
+        this.diasAtencion.push(this.turnosDisponibles[i]['fecha']);
+      //}
+    }*/
+
+
+   /* turnos.forEach(t=>{
+      console.log("elemento del array::");
+      console.log(t);
+      if(this.diasAtencion.length==0)
+        this.diasAtencion.push(t['fecha']);
+      
+    });*/
+    //console.log("holaaa"+this.diasAtencion);
   }
 
   parserFecha(fecha:Date)
@@ -110,31 +181,16 @@ export class NuevoTurnoComponent implements OnInit {
     let dia = fecha.getDate();
     let mes = fecha.getMonth()+1;
     let anio = fecha.getFullYear() ;
-  //  let feche = dia + "-" + mes + "-" + anio;
-  let feche;
-  if(dia>9)
-  {
-     feche = anio + "-" + mes + "-" + dia;
-
-  }
-  else
-  {
-     feche = anio + "-" + mes + "-" + "0"+dia;
-
-  }
-    
-    return feche;
-   
-  }
-
-  cargarProfesionales(dato:string)
-  { 
-    this.data.getProfesionalesByEspecialidad(dato).then(res =>{
-      if(res.length > 0)
-      { 
-        this.profesionales = res; 
-      }console.log(res);
-    });
+    let feche;
+    if(dia>9)
+    {
+      feche = anio + "-" + mes + "-" + dia;
+    }
+    else
+    {
+      feche = anio + "-" + mes + "-" + "0"+dia;
+    }
+      return feche;
   }
 
   transformFech(fecha:string)
@@ -148,47 +204,68 @@ export class NuevoTurnoComponent implements OnInit {
         case "Martes":
          dia = 2; 
         break;
-
         case "Miércoles":
           dia = 3; 
         break;
-
         case "Jueves":
           dia = 5; 
         break;
-
         case "Viernes":
           dia = 5; 
         break;
-
         case "Sábado":
           dia = 6; 
         break;
     } 
-
     return dia;
-
   }  
 
-  tomarFechaHora(evento:any)
+  tomarFecha(evento:any)
   { 
+    console.log("fecha seleccionada:::");
+    console.log(evento.fecha);
     this.turno.fecha = evento.fecha;
-    this.turno.hora = evento.hora;
+    console.log(this.turnosDisponibles);
+    //this.turno.hora = evento.hora;
+    this.mostrarFechas=false;
+    this.mostrarHoras=true;
+    this.cargarHora();
     console.log(this.turno.fecha);
+    console.log("horas:::");
+    console.log(this.horas);
+  }
+
+  tomarHora(evento:any){
+    this.turno.hora = evento;
+    //this.turno.hora = evento.hora;
+    console.log(this.turno.hora);
+    this.Entrar();
   }
 
   ExisteTurno(fecha:string,hora:any,num:number,dia:string,mes:number)
   { 
+    console.log("numero::"+num);
      let turnosDisponibles = [];
      this.data.TurnoFecha(fecha,hora).then(res =>{
         turnosDisponibles = res;
         if(turnosDisponibles.length == 0)
         { 
           this.turnosDisponibles.push({fecha:fecha,hora:hora,numero:num,nombre:dia,mes:mes+1});
-        }
-          //console.info(this.turnosDisponibles);   
+        }   
       })
-    //this.turnosDisponibles =  
+      if(turnosDisponibles.length==0)
+      {
+        console.log("no hay turnos disponibles");
+      }
+      else{
+        if(turnosDisponibles.length==1){
+          this.mostrarFechas=false;
+          this.mostrarHoras=true;
+        }
+        else{
+          this.mostrarFechas=true;
+        }
+      }
   }
 
   OrdenarLista()
@@ -208,7 +285,48 @@ export class NuevoTurnoComponent implements OnInit {
     }
   }
 
-  Fechas()
+  CargarDiasDisponibles()
+  {
+    let day = new Date();
+    let diasDisponibles = [];
+
+    this.turno.profesional.atencion.forEach(element => {
+    let dia = this.transformFech(element.dia);
+    let dif = day.getDay() - dia;
+    let fecha:Date = new Date();
+
+    if(dif > 0)
+    { 
+      fecha.setDate(fecha.getDate() - dif);
+    }
+    else
+    {  
+      if(dif<0)
+      {
+        fecha.setDate(fecha.getDate() - dif);
+      }
+      else
+      {
+      }
+    }
+    if(dif <1)
+    {
+      let fe  = this.parserFecha(fecha);
+      this.ExisteTurno(fe,element.hora,fecha.getDate(),element.dia,fecha.getMonth());
+    }
+    let semana:Date = new Date();
+    console.log("diaa nro "+ element.dia);
+    for (let i = 1; i < 3; i++) {
+      let segundos=7*86399.9;
+      semana.setSeconds(segundos);
+      let sem = this.parserFecha(semana);
+      this.ExisteTurno(sem,element.hora,this.transformFech(element.dia),element.dia,semana.getMonth());
+      //this.ExisteTurno(sem,element.hora,semana.getDate(),element.dia,semana.getMonth());
+    }
+  });
+}
+
+  /*Fechas()
   {
     let day = new Date();
     let turnosDisponibles = [];
@@ -256,8 +374,7 @@ export class NuevoTurnoComponent implements OnInit {
    // console.info(turnosDisponibles);
 
     });
-  }
-
+  }*/
  
 
   cargarHora()
@@ -265,7 +382,11 @@ export class NuevoTurnoComponent implements OnInit {
     
     this.horas = [];
     
+    console.log("estamos en carga de hs");
+    console.log(this.turno);
     let date = new Date(this.turno.fecha);
+    date.setSeconds(86399.9);
+    console.log(date);
     let dia="";
     let dias=[];
     console.info();
@@ -312,5 +433,17 @@ export class NuevoTurnoComponent implements OnInit {
     }
   }
      
+  Entrar(){  
+    this.turno.paciente = this.usuario;
+
+    this.auth.registerTurnos(this.turno).then(res=>{
+      console.log("Guarda bien el turno");
+      //this.toastr.success("Turno Guardado con Éxito");
+    }).catch(error =>{
+      console.log("Pincho el turno pa");
+      console.info(error);
+    })
+  }
+   
   
 }

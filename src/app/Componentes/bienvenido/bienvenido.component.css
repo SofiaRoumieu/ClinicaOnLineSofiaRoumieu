@@ -1,9 +1,9 @@
 .containerInicioRegistro {
-  margin-top: 5rem;
+  margin-top: 1rem;
   display: flex;
   z-index:999;
   flex-direction: row;
-  flex-wrap: wrap;
+  /*flex-wrap: wrap;*/
  justify-content: center;
   border-radius: 100%;
   background-color: white;
@@ -11,7 +11,8 @@
 -moz-box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
 box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
 text-align: center;
-width: 40%;
+width: 400px;
+height: 400px;
 
 }
 .container{
@@ -37,9 +38,20 @@ box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
   align-items: center;
 }
 
-  
+.contenedorCabecera{
+  height: 165px;
+}
+.fotoCabecera{
+  height: 120px;
+    border-radius: 10px;
+    border: solid;
+}
 
-.container:hover {
+.divTitulo{
+  text-align: center;
+}
+
+.containerInicioRegistro:hover {
   z-index: 1000;
   transform: scale(1.1);
 }

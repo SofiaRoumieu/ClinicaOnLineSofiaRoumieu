@@ -13,6 +13,7 @@ export class MenuComponent implements OnInit {
     estado_activo:boolean=false;
     mail_usuario?:string; 
     user:any;
+    rol?:string;
     constructor(private authSv: AuthService, private router: Router) { }
   
   

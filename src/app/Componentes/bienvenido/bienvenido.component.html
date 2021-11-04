@@ -1,3 +1,29 @@
+<div class="contenedorCabecera" *ngIf="!seleccionado">
+  <mat-card>
+    <div class="row">
+      <div class="col-4">
+        <img class="fotoCabecera" [src]="usuario.img1">
+        <img *ngIf="tipoUsuario=='paciente'" class="fotoCabecera" style="margin-left: 10px;" [src]="usuario.img2">
+      </div>
+      <div class="col-8">
+        <div class="row">
+          <div class="col-4"><label><strong>Nombre: </strong>{{usuario.nombre}}</label></div>
+          <div class="col-4"><label><strong>Apellido: </strong>{{usuario.apellido}}</label></div>
+          <div class="col-4"><label><strong>Edad: </strong>{{usuario.edad}} años</label></div>
+        </div>
+        <div class="row">
+          <div class="col-4"><label><strong>Rol: </strong>{{usuario.rol}}</label></div>
+          <div class="col-4"><label><strong>E-Mail: </strong>{{usuario.email}}</label></div>
+          <div *ngIf="tipoUsuario=='profesional'" class="col-4"><label><strong>Especialidades: </strong>{{usuario.especialidades}}</label></div>
+        </div>
+        <div *ngIf="tipoUsuario=='paciente'"  class="row">
+          <button class="primary">Historia Clínica</button>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>
+
 <div class="divTitulo" *ngIf="!seleccionado">
   <h2>Seleccione una acción:</h2>
 </div>
@@ -8,6 +34,11 @@
     </div>
   </mat-card>
   <mat-card *ngIf="tipoUsuario=='admin'" class="containerInicioRegistro" title="Ver Turnos" (click)="MostrarComponente('consultarAgenda')">
+    <div  class="imgcontainer">
+      <img src="../../../assets/portapapeles.png" alt="Avatar" class="avatar" style="max-height: 90%;" >
+    </div>
+  </mat-card>
+  <mat-card *ngIf="tipoUsuario=='admin'" class="containerInicioRegistro" title="Agendar Turnos" (click)="MostrarComponente('nuevoTurno')">
     <div  class="imgcontainer">
       <img src="../../../assets/calendario.png" alt="Avatar" class="avatar" style="max-height: 90%;" >
     </div>
@@ -23,6 +54,11 @@
     </div>
   </mat-card>
   <mat-card *ngIf="tipoUsuario=='profesional'" class="containerInicioRegistro" title="Mis Turnos" (click)="MostrarComponente('misTurnos')">
+    <div  class="imgcontainer">
+      <img src="../../../assets/busqueda.png" alt="Avatar" class="avatar" style="max-height: 90%;"  >
+    </div>
+  </mat-card>
+  <mat-card *ngIf="tipoUsuario=='profesional'" class="containerInicioRegistro" title="Mis Turnos" (click)="MostrarComponente('horarios')">
     <div  class="imgcontainer">
       <img src="../../../assets/busqueda.png" alt="Avatar" class="avatar" style="max-height: 90%;"  >
     </div>

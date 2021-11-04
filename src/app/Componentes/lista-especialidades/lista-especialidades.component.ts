@@ -8,7 +8,7 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class ListaEspecialidadesComponent implements OnInit {
 
-  listado:any;
+  //listado:any;
   col:string = "";
   dis:boolean = false;
   @Output() enventoEspecialidad = new EventEmitter<any>();
@@ -16,26 +16,14 @@ export class ListaEspecialidadesComponent implements OnInit {
  
   constructor(private data:DataService) { }
 
+  @Input() listado:any;
   
   ngOnInit(): void {
-    this.data.getEspecialidades().subscribe(res =>{
-      
-      this.listado = res; 
-    })
+    
   }
   
   tomarEspecialidad(especialidad:any)
   {
     this.enventoEspecialidad.emit(especialidad);
   }
-  seleccionado(i:number){
-    
-    let id:string = i.toString();
-   
-
-     document.getElementById(id).style.backgroundColor='green';
-     this.dis = true;
-    
-  }
-
 }

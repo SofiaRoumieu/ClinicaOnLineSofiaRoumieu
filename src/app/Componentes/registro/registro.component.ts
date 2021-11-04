@@ -48,22 +48,17 @@ export class RegistroComponent implements OnInit {
     this.cargarEspecialidades();
     if(this.validacion())
     {
-      
-        if(this.tipoIngreso == "paciente")
+      if(this.tipoIngreso == "paciente")
         {
           this.usuario.tipo="paciente";
           this.auth.registerPaciente(this.usuario,this.img1,this.img2);
-          
         }
         else
         {
-          
           this.usuario.tipo="profesional";
           this.auth.registerProfesional(this.usuario,this.lista,this.img1);
         }
-
     }
-     
   }
   
   resolved(captchaResponse: any) {
@@ -72,7 +67,6 @@ export class RegistroComponent implements OnInit {
 
   validacion()
   {  
-    console.log(this.usuario);
     if(this.usuario.nombre != null && this.usuario.apellido !=null && this.usuario.email !=null && this.usuario.dni !=null && this.usuario.pass !=null && this.clave !=null)
     {
       if(this.usuario.pass == this.clave)
@@ -101,7 +95,6 @@ export class RegistroComponent implements OnInit {
             });
             return false;
           }
-
           if(this.usuario.edad<18){
             Swal.fire({
               title:'Error en la carga',
@@ -115,9 +108,7 @@ export class RegistroComponent implements OnInit {
 
         if(this.tipoIngreso=="profesional")
         {
-          
           if(this.lista.length>0){
-            console.info(this.lista);
             return true;
           }
           else
@@ -142,9 +133,7 @@ export class RegistroComponent implements OnInit {
           confirmButtonText:'Cerrar'
         });
         return false;
-
       }
-
     }
     else
     { 
@@ -161,7 +150,6 @@ export class RegistroComponent implements OnInit {
 
   cargarEspecialidades(){
     this.lista = (this.especialidades.filter(res => res.completed == true )).map(res => res.name);
-    console.log("nueva especialidad::"+ this.nuevaEspecialidad);
     if(this.nuevaEspecialidad!='' && this.especialidades!=undefined){
       this.lista.push(this.nuevaEspecialidad);
       this.data.AgregarEspecialidad({nombre: this.nuevaEspecialidad, completed: false, color: 'primary'});
@@ -174,22 +162,16 @@ export class RegistroComponent implements OnInit {
       this.tipoIngreso="";
       this.data.getEspecialidades().subscribe( res =>{
         res.forEach(item =>{
-          
           let objet = {name: item.nombre, completed: false, color: 'primary'} 
-
-          this.especialidades.push(objet);
-            
-        })
-
+          this.especialidades.push(objet);    
+        });
         console.info(this.especialidades);
-      }) 
-
+      }); 
 
       this.auth.getUserByMail(this.auth.getCurrentUserMail()).then(res =>{
         if(res.length > 0)
         { 
            this.tipoUsuario=res[0].rol;
-           console.log(this.tipoUsuario);
         }
       }, error=>{
         Swal.fire({
@@ -199,19 +181,16 @@ export class RegistroComponent implements OnInit {
         confirmButtonText:'Cerrar'
       });
       })
-
-
   }
    
   onFileSelected(event) {
     this.img1 = event.target.files[0];
     this.usuario.img1=" ";
-    console.log(this.img1);
   }
+
   onFileSelected2(event) {
     this.img2 = event.target.files[0];
     this.usuario.img2=" ";
-    console.log(this.img2);
   }
 
   updateAllComplete(){

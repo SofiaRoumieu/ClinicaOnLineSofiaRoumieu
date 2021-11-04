@@ -13,6 +13,7 @@ import { firestore } from 'firebase';
 })
 export class BienvenidoComponent implements OnInit {
 
+  usuario:Usuario;
   tipoUsuario: string;
   seleccionado:boolean;
   tipoAccion:string;
@@ -27,6 +28,7 @@ export class BienvenidoComponent implements OnInit {
     this.authService.getUserByMail(this.authService.getCurrentUserMail()).then(res =>{
       if(res.length > 0)
       { 
+         this.usuario=res[0];
          this.tipoUsuario=res[0].rol;
          console.log(this.tipoUsuario);
       }
@@ -37,7 +39,7 @@ export class BienvenidoComponent implements OnInit {
       icon:'error',
       confirmButtonText:'Cerrar'
     });
-    })
+    });
   }
 
   MostrarComponente(componente:string)
@@ -51,6 +53,9 @@ export class BienvenidoComponent implements OnInit {
         break;
       case 'misTurnos':
         this.router.navigate(['/listadoTurnos']);
+      break;
+      case 'horarios':
+        this.router.navigate(['/horariosProfesional']);
       break;
       case 'consultarAgenda':
         this.router.navigate(['/listadoTurnos']);

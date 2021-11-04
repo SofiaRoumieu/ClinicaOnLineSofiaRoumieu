@@ -1,4 +1,10 @@
-<mat-horizontal-stepper [linear]="true" #stepper>
+<app-lista-pacientes *ngIf="mostrarPacientes" [listado]="profesionales" (enventoProfesional)="tomarProfesional($event)"></app-lista-pacientes>
+<app-lista-profesionales *ngIf="mostrarProfesionales" [listado]="profesionales" (enventoProfesional)="tomarProfesional($event)"></app-lista-profesionales>
+<app-lista-especialidades *ngIf="mostrarEspecialidades" [listado]="especialidades"  (enventoEspecialidad)="tomarEspecialidad($event)"></app-lista-especialidades>
+<app-lista-fecha-hora *ngIf="mostrarFechas"  [listado]="turnosDisponibles" (enventoFecha)="tomarFecha($event)" ></app-lista-fecha-hora><!--[profesional]="turno.profesional.apellido"-->
+<app-lista-horas *ngIf="mostrarHoras" [listado]="horas" (enventoHorario)="tomarHora($event)"></app-lista-horas>
+
+<!--<mat-horizontal-stepper [linear]="true" #stepper>
     <mat-step >
         <ng-template matStepLabel>Seleccione Especialidad</ng-template>
         <app-lista-especialidades (enventoEspecialidad)="tomarEspecialidad($event)"></app-lista-especialidades>
@@ -9,7 +15,7 @@
         </mat-form-field>
 
         <div>
-          <button [disabled]="!turno.especialidad" (click)="cargarProfesionales(turno.especialidad)"  mat-button matStepperNext>Siguiente</button><!--(click)="cargarProfesionales(turno.especialidad)"-->
+          <button [disabled]="!turno.especialidad" (click)="cargarProfesionales(turno.especialidad)"  mat-button matStepperNext>Siguiente</button>
         </div>
      
     </mat-step>
@@ -20,19 +26,19 @@
         
         <mat-form-field>
           <mat-label style="color: #c2185b;">Profesional</mat-label>
-          <input [disabled]="true"  matInput type="text"  placeholder="profesional"
-                  ><!--[(ngModel)]="turno.profesional.nombre" -->
+          <input [disabled]="true"  matInput type="text"  placeholder="profesional"[(ngModel)]="turno.profesional.nombre"
+                  >
                 
         </mat-form-field>
         <div>
           <button mat-button matStepperPrevious>Anterior</button>
-          <button  mat-button matStepperNext>Siguiente</button><!--[disabled]="!turno.profesional.nombre"-->
+          <button  mat-button matStepperNext [disabled]="!turno.profesional.nombre">Siguiente</button>
         </div>
       
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Selecciona Fecha y Hora</ng-template>
-    <app-lista-fecha-hora *ngIf="turnosDisponibles"  [listado]="turnosDisponibles" (enventoFecha)="tomarFechaHora($event)" ></app-lista-fecha-hora><!--[profesional]="turno.profesional.apellido"-->
+    <app-lista-fecha-hora *ngIf="turnosDisponibles" [profesional]="turno.profesional.apellido"  [listado]="turnosDisponibles" (enventoFecha)="tomarFechaHora($event)" ></app-lista-fecha-hora>
     
         <mat-form-field>
       <mat-label style="color: #c2185b;">Fecha</mat-label>
@@ -62,7 +68,7 @@
           <label style="color: #c2185b;" for=""><strong>Especialidad</strong> </label>
           {{turno.especialidad}}
           <label style="color: #c2185b;" for=""><strong>Profesional</strong> </label>
-          <!--{{turno.profesional.nombre}} {{turno.profesional.apellido}}-->
+          {{turno.profesional.nombre}} {{turno.profesional.apellido}}
           <label style="color: #c2185b;" for=""><strong>Fecha</strong> </label>
           {{this.turno.fecha |fecha}}
           <label style="color: #c2185b;" for=""><strong>Hora</strong> </label>
@@ -76,5 +82,5 @@
         <button mat-button (click)="stepper.reset()">Reset</button>
       </div>
     </mat-step>
-  </mat-horizontal-stepper>
+  </mat-horizontal-stepper>-->
 <!-- <app-lista-especialidades></app-lista-especialidades> -->

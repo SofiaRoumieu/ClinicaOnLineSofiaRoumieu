@@ -1,98 +1,48 @@
-mat-card {
-    /* max-width: 400px;*/
-     /*margin: 2em auto;*/
-     text-align: left;
-     
- }
- .containerInicioRegistro {
-     margin-top: 5rem;
-     display: flex;
-     z-index:999;
-     flex-direction: row;
-     flex-wrap: wrap;
-    justify-content: center;
-     border-radius: 100%;
-     background-color: white;
-     -webkit-box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
- -moz-box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
- box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
- text-align: center;
- width: 40%;
- 
- }
- .container{
-    margin-top: 1rem;
+.containerInicioRegistro {
+    margin-top: 5rem;
     display: flex;
     z-index:999;
     flex-direction: row;
-    flex-wrap: wrap;
+    /*flex-wrap: wrap;*/
    justify-content: center;
-    border-radius: 1rem;
+    border-radius: 100%;
     background-color: white;
     -webkit-box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
--moz-box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
-box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
-
-}
- .contenedor{
-    
-     display: flex;
-     flex-direction: column;
-     flex-wrap: wrap;
-     height: 70%;
-     align-items: center;
- }
-
- form{
-     padding: 1rem;
+  -moz-box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
+  box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
+  text-align: center;
+  width: 400px;
+  height: 400px;
+  
   }
- 
- .divFoto{
-     display: flex;
-     flex-direction: column;
-     width: 50%;
- }
- 
- .foto{
-     display: none;
-     margin-top: 1rem;
-     flex-direction: column;
- }
- 
- .especialidad{
-     display: flex;
-     flex-direction: column;
-     flex-wrap: wrap;
-     justify-content: center;
-     text-align: center;
-     align-content: flex-start;
-}
-
- .custom-file{
-     border: solid 1px black;
-     display: inline-block;
-     padding: 6px 0px;
-     cursor: pointer;
-     width: 20%;
-     text-align: center;
-     margin-top: 1rem;
-     border-radius: 0.5rem;
-     color:white;
-     background-color: rgb(8, 151, 8);
-     margin-bottom: 1rem;
-     
- }
- .span{
-     margin-left: 1rem;
-     font-size: 2rem;
-     margin-bottom: 0.5rem;
-     font-weight: lighter;
-     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
- }
- .divTitulo{
+  .container{
+   margin-top: 1rem;
+   display: flex;
+   z-index:999;
+   flex-direction: row;
+   flex-wrap: wrap;
+  justify-content: center;
+   border-radius: 1rem;
+   background-color: white;
+   -webkit-box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
+  -moz-box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
+  box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
+  
+  }
+  .contenedor{
+   
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 70%;
+    align-items: center;
+  }
+  
+  .divTitulo{
     margin: 1rem;
     text-align: center;
-}
+  }
+  
 .containerInicioRegistro:hover {
     z-index: 1000;
     transform: scale(1.1);

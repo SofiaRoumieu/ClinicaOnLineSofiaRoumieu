@@ -18,6 +18,14 @@ import {MatStepperModule} from '@angular/material/stepper';
 import { MatCheckboxModule } from '@angular/material/checkbox'; 
 import { HttpClientModule } from '@angular/common/http';
 import { MatSelectModule } from '@angular/material/select';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatListModule} from '@angular/material/list';
 //import { MatDivider} from '@angular/material/divider';
 
 //capcha
@@ -47,6 +55,13 @@ import { SortTurnosPipe } from './pipes/sort-turnos.pipe';
 import { MesesPipe } from './pipes/meses.pipe';
 import { ListadoTurnosComponent } from './Componentes/listado-turnos/listado-turnos.component';
 import { BusquedaPipe } from './pipes/busqueda.pipe';
+import {EstadoTurnoPipe} from './pipes/estado-turno.pipe';
+import { HorariosProfesionalComponent } from './Componentes/horarios-profesional/horarios-profesional.component';
+import { VerTurnoComponent } from './Componentes/ver-turno/ver-turno.component';
+import { VerTurnoDetalleComponent } from './Componentes/ver-turno-detalle/ver-turno-detalle.component';
+import { CalificacionPipe } from './pipes/calificacion.pipe';
+import { ListaHorasComponent } from './Componentes/lista-horas/lista-horas.component';
+import { ListaPacientesComponent } from './Componentes/lista-pacientes/lista-pacientes.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +83,14 @@ import { BusquedaPipe } from './pipes/busqueda.pipe';
     SortTurnosPipe,
     MesesPipe,
     ListadoTurnosComponent,
-    BusquedaPipe
+    BusquedaPipe,
+    EstadoTurnoPipe,
+    HorariosProfesionalComponent,
+    VerTurnoComponent,
+    VerTurnoDetalleComponent,
+    CalificacionPipe,
+    ListaHorasComponent,
+    ListaPacientesComponent
   ],
   imports: [
     BrowserModule,
@@ -87,6 +109,14 @@ import { BusquedaPipe } from './pipes/busqueda.pipe';
     MatCheckboxModule,
     HttpClientModule,
     MatStepperModule,
+    MatExpansionModule,
+    MatMenuModule,
+    MatSnackBarModule,
+    MatListModule,
+    MatFormFieldModule,
+    MatSidenavModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     //MatDivider,
     AngularFireModule.initializeApp(firebase),
     AngularFirestoreModule, // firestore

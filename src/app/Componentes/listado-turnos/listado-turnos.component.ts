@@ -30,7 +30,8 @@ export class ListadoTurnosComponent implements OnInit {
   constructor( private data:DataService,private auth:AuthService) { }
 
   ngOnInit(): void {
-
+    console.log("rol del usuario:::");
+    console.log(this.usuario.rol);
     var uid="0";
      this.auth.getUserUid().then(res =>{
        uid = res.toString();
@@ -83,9 +84,11 @@ export class ListadoTurnosComponent implements OnInit {
   }
   tomarTurno(turno:Turno)
   {
+    
      this.turnoSeleccionado = turno;
      this.mostrarModalDetalle = true;
-    
+     console.log(turno);
+     console.log(this.mostrarModalDetalle);
   }
   cerrarModalDetalle(dato:any)
   { 
@@ -99,8 +102,10 @@ export class ListadoTurnosComponent implements OnInit {
      if(this.usuario.rol == "paciente")
      {
        this.auth.updateEstadoTurno(turno,-1).then(res=>{
+        alert("modificado");
         // this.toast.success("Turno Cancelado con éxito");
        }).catch(error=>{
+        alert(error);
          //this.toast.error("Hemos tenido un problema la cancelar el turno","Error");
        })
 

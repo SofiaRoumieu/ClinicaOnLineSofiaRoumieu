@@ -81,6 +81,16 @@ export class AuthService {
     })
   }
 
+  updateHorario(actor:Usuario)
+  { 
+    console.log(actor.uid);
+    return  this.db.collection('usuarios').doc(actor.uid).update({
+      atencion: actor.atencion,
+    }) 
+
+  }
+
+
   async registerPaciente(usuario: Usuario, img1, img2) {
     var router = this.router;
     var dbRef = this.db;
@@ -91,7 +101,7 @@ export class AuthService {
        this.afAuth.createUserWithEmailAndPassword(usuario.email, usuario.pass)
      .then(function(credencial) {
 
-       ad.router.navigate(['/bienvenidos']);                  
+       ad.router.navigate(['/login']);                  
        ad.sendVerificationEmail().then(res =>{
         console.log("Se envio bien el mail");
       }).catch(error =>{
@@ -147,7 +157,7 @@ export class AuthService {
        this.afAuth.createUserWithEmailAndPassword(usuario.email, usuario.pass)
      .then(function(credencial) {
 
-       ad.router.navigate(['/bienvenidos']);                  
+       ad.router.navigate(['/login']);                  
        ad.sendVerificationEmail().then(res =>{
         Swal.fire({
           title:'E-mail de verificación enviado',
@@ -210,7 +220,7 @@ export class AuthService {
       this.subirArchivo(usuario.email+"_img1",imagen1,{nombre:usuario.nombre,
         apellido:usuario.apellido,
         dni:usuario.dni,
-        id:usuario.id,
+        id:usuario.uid,
         email:usuario.email,
         rol:usuario.rol,
       
@@ -219,7 +229,7 @@ export class AuthService {
           this.subirArchivo(usuario.email+"_img2",imagen2,{nombre:usuario.nombre,
             apellido:usuario.apellido,
             dni:usuario.dni,
-            id:usuario.id,
+            id:usuario.uid,
             email:usuario.email,
             rol:usuario.rol,
           }).then(img2=>{
@@ -239,39 +249,24 @@ export class AuthService {
     }
 
 
-    public uploadImgProf( usuario: Usuario, imagen1){
-      return new Promise((resolve,rejects) =>{
-        this.subirArchivo(usuario.email+"_img1",imagen1,{nombre:usuario.nombre,
-          apellido:usuario.apellido,
-          dni:usuario.dni,
-          id:usuario.id,
-          email:usuario.email,
-          rol:usuario.rol,
-        
-        
-        }).then((img)=>{
-           /* this.subirArchivo(usuario.email+"_img2",imagen2,{nombre:usuario.nombre,
-              apellido:usuario.apellido,
-              dni:usuario.dni,
-              id:usuario.id,
-              email:usuario.email,
-              rol:usuario.rol,
-            }).then(img2=>{*/
-             img.ref.getDownloadURL().then(data=>{
-              usuario.img1 = data;
-              console.log(data); 
-              resolve(data);
-              /*img2.ref.getDownloadURL().then( data2=>{
-                usuario.img2 = data2;
-                resolve(data2);
-                
-               });*/
-             });  
-            });
-         // });
-      })  
-  
-      }
+public uploadImgProf( usuario: Usuario, imagen1){
+  return new Promise((resolve,rejects) =>{
+    this.subirArchivo(usuario.email+"_img1",imagen1,{nombre:usuario.nombre,
+      apellido:usuario.apellido,
+      dni:usuario.dni,
+      id:usuario.uid,
+      email:usuario.email,
+      rol:usuario.rol,
+    }).then((img)=>{
+          img.ref.getDownloadURL().then(data=>{
+          usuario.img1 = data;
+          console.log(data); 
+          resolve(data);
+          });  
+        });
+  })  
+
+}
   
   
   subirArchivo(nombreArchivo: string, datos: any,metadata:any) {
@@ -330,7 +325,15 @@ export class AuthService {
       return new Promise((resolve, reject) =>{
         this.db.collection("turnos").ref.orderBy('id',"desc").limit(1).get().then(res=>{    
           res.forEach(a=>{
-            let ida =  Number(a.id) + 1;
+            console.log("estamos en registro de turno");
+            console.log(a.id);
+            let ida:Number =1;
+            console.log(Number(a.id));
+            if(Number(a.id)!==NaN){
+              console.log("entro a Number(a.id)!=NaN");
+              ida =  Number(a.id) + 1;
+            }
+            console.log(ida);
             this.db.collection("turnos").doc(ida.toString()).set({
              
              paciente:turno.paciente,
@@ -366,11 +369,45 @@ export class AuthService {
 
     updateEstadoTurno(turno:Turno,estado:number)
     { 
+      console.log(turno);
+      console.log("modificando estado de turno");
+      console.log(turno.id.toString());
+      console.log(estado);
       return  this.db.collection('turnos').doc(turno.id.toString()).update({
         estado: estado,
         
         }) 
 
     }
-    
+
+  updateOpinion(turno:Turno,user:Usuario,valor:string,valor2:number,edad ?:number,temperatura?:number,presion?:number,datosAdicional?:Array<any>)
+  { 
+    if(user.rol == "paciente")
+      {
+        return  this.db.collection('turnos').doc(turno.id.toString()).update({
+          opinionPaciente:valor,
+          calificacionPaciente:valor2
+        });
+      }
+    else
+    { 
+      console.info(datosAdicional);
+      return  this.db.collection('turnos').doc(turno.id.toString()).update({
+        opinionProfesional:valor,
+        calificacionProfesional:valor2,
+        edad:edad,
+        temperatura:temperatura,
+        presion:presion,
+        datosAdicionales:datosAdicional
+      });
+    }
+  }
+
+  upadteJustificacion(turno:Turno,valor:string)
+  {
+    return  this.db.collection('turnos').doc(turno.id.toString()).update({
+      comentario:valor,
+    });
+  }
+
 }

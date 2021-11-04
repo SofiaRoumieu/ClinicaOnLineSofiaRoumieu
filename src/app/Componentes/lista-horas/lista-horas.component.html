@@ -1,0 +1,14 @@
+<div class="divTitulo">
+    <h2>Seleccione una Hora:</h2>
+  </div>
+  <div  class="contenedor">
+    <div *ngFor="let hora of listado; let i = index" style="text-align: center;">
+      <!--<label class="lblFoto">{{hora.hora}}</label>-->
+      <div  (click)="seleccionarHorario(hora)" class="containerInicioRegistro"> 
+        <label class="lblFoto">{{hora}}</label>
+        <!--<div class="imgcontainer">
+          <img class="botonUsuarios" style="overflow: hidden;" [src]="profesional.img1">
+        </div>-->
+      </div>
+    </div>
+  </div>  
