@@ -90,7 +90,7 @@ import { ListaPacientesComponent } from './Componentes/lista-pacientes/lista-pac
     VerTurnoDetalleComponent,
     CalificacionPipe,
     ListaHorasComponent,
-    ListaPacientesComponent
+    ListaPacientesComponent,
   ],
   imports: [
     BrowserModule,

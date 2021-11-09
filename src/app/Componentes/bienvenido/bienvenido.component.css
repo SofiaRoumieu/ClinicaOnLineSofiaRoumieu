@@ -40,6 +40,8 @@ box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
 
 .contenedorCabecera{
   height: 165px;
+  margin:10px;
+  margin-bottom: 40px;
 }
 .fotoCabecera{
   height: 120px;
@@ -47,6 +49,15 @@ box-shadow: -2px 7px 29px 6px rgba(0,0,0,0.75);
     border: solid;
 }
 
+.botonUsuarios {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.fab-button:hover {
+  z-index: 1000;
+  transform: scale(1.2);
+}
 .divTitulo{
   text-align: center;
 }

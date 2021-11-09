@@ -62,10 +62,12 @@
             <td>{{turno.estado | estadoTurno}}  </td> 
             <td>
               <button  (click)="tomarTurno(turno)" class="btn btn-primary" style="margin-right: 1rem;">Detalle</button>
-              <button *ngIf="usuario.rol == 'paciente' && turno.estado < 2" (click)="cancelar(turno)" class="btn btn-danger" style="margin-right: 1rem;">Cancelar</button>
+              <button *ngIf="usuario.rol == 'paciente' && (turno.estado ==0 || turno.estado == 1)" (click)="cancelar(turno)" class="btn btn-danger" style="margin-right: 1rem;">Cancelar</button>
+              <button *ngIf="(usuario.rol == 'admin' || usuario.rol == 'profesional') && turno.estado != 1 && turno.estado != -2 && turno.estado !=5 && turno.estado !=2 && turno.estado != -1 && turno.estado!=4" (click)="cancelar(turno)" class="btn btn-danger" style="margin-right: 1rem;">Cancelar</button>
               <button *ngIf="usuario.rol == 'profesional' && turno.estado == 0" (click)="aceptar(turno)" class="btn btn-success" style="margin-right: 1rem;">Aceptar</button>
               <button *ngIf="usuario.rol == 'profesional'  && turno.estado == 0" class="btn btn-danger" (click)="rechazar(turno)" >Rechazar</button>
-              <button *ngIf="usuario.rol != 'paciente' && turno.estado == 1 " class="btn btn-danger" (click)="cancelar(turno)" class="btn btn-danger" style="margin-right: 1rem;">Cancelar</button>
+              <button *ngIf="(usuario.rol == 'profesional' || usuario.rol == 'paciente') && turno.comentario != undefined && turno.comentario != ''" class="btn btn-warning" (click)="verReseniaModal(turno)" >Ver reseña</button>
+              <!--<button *ngIf="usuario.rol != 'paciente' && turno.estado == 1 " class="btn btn-danger" (click)="cancelar(turno)" class="btn btn-danger" style="margin-right: 1rem;">Cancelar</button>-->
               
 
             </td>
@@ -75,7 +77,7 @@
       </table>
       
     </div>
-    <app-ver-turno [cancelar]="cancelarPro" [rechazar]="rechazarPro" [user]="usuario" [turno]="turnoSeleccionado"[mostrar]="mostrarModal" (eventoMostrarModal)="mostrarEncuesta($event)" (eventoJustifacion)="justificacion($event)"></app-ver-turno>
+    <app-ver-turno [cancelar]="cancelarPro" [verResenia]="verResenia" [rechazar]="rechazarPro" [user]="usuario" [turno]="turnoSeleccionado"[mostrar]="mostrarModal" (eventoMostrarModal)="mostrarEncuesta($event)" (eventoJustifacion)="justificacion($event)"></app-ver-turno>
    <app-ver-turno-detalle [turno]="turnoSeleccionado" [user]="usuario" [mostrar]="mostrarModalDetalle"(eventoMostrarModal)="cerrarModalDetalle($event)"(eventoMostrarEncuesta)="mostrarEncuesta($event)"></app-ver-turno-detalle>
 
     

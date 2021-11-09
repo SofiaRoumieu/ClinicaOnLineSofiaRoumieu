@@ -42,6 +42,17 @@ export class DataService {
     return listado;
   }
 
+  async getPacientes(){
+    let usrsRef = await this.dbUsersRef.ref.where("rol", "==", "paciente").get();
+    let listado:Array<any> = new Array<any>();
+
+     usrsRef.docs.map(function(x){
+        listado.push(x.data());
+    });
+
+    return listado;
+  }
+
   async getEspecialidadesByNombre(especialidad:string, listado:Array<any>){
     let usrsRef = await this.dbEspecialidadRef.ref.where("nombre", "==", especialidad).get();
     
@@ -85,7 +96,6 @@ export class DataService {
   async TurnoFecha(fecha:string,hora:any)
   {
     let turnos = [];
-    //comentado por sofia, para ver turnos tomados de las fehcas
     let turnosUfs =  await this.dbTurnosRef.ref.where("fecha", "==", fecha).where("hora","==",hora).get();
     //let turnosUfs =  await this.dbTurnosRef.ref.where("fecha", "==", fecha).get();
       
@@ -99,15 +109,80 @@ export class DataService {
     return this.dbTurnosRef.valueChanges();
   }
 
-  /*async getUserByMail(uid: string) {
+  async getTurnosPorEstadoYPorPaciente(uidPaciente:string, estado:number){
+    let turnos :Array<any> = new Array<any>();
+    let turnosUfs =  await this.dbTurnosRef.ref.where("paciente.uid", "==", uidPaciente).where("estado","==",estado).get();
+     
+    turnosUfs.docs.map(function(x){
+      turnos.push(x.data());
+    }); 
+    console.log("turnos::");
 
-    let usrsRef = await this.usuarios.ref.where("uid", "==", uid).get();
-    let listado:Array<any> = new Array<any>();
-    console.log(usrsRef);
-    usrsRef.docs.map(function(x){
-        listado.push(x.data());
+    console.log(turnos);
+    return turnos;
+  }
+
+  async getTurnosPorEstadoYPorPacienteYPorProfesional(uidPaciente:string, estado:number,uidProfesional:string){
+    let turnos :Array<any> = new Array<any>();
+    let turnosUfs =  await this.dbTurnosRef.ref.where("paciente.uid", "==", uidPaciente).where("estado","==",estado).where("profesional.uid","==",uidProfesional).get();
+     
+    turnosUfs.docs.map(function(x){
+      turnos.push(x.data());
+    }); 
+    console.log("turnos::");
+
+    console.log(turnos);
+    return turnos;
+  }
+
+  async getProfesionalesByPacientes(uidPaciente:string, estado:number){
+    let turnos :Array<any> = new Array<any>();
+    let profesionales :Array<any> = new Array<any>();
+    let turnosUfs =  await this.dbTurnosRef.ref.where("paciente.uid", "==", uidPaciente).where("estado","==",estado).get();
+    let encontrado=false;
+
+    turnosUfs.docs.map(function(x){
+      turnos.push(x.data());
+    }); 
+    turnos.forEach(t => {
+      profesionales.forEach(p => {
+        if(p.uid==t.profesional.uid)
+          encontrado=true;
+      });
+      if(encontrado==false)
+      {
+        profesionales.push(t.profesional);
+      }
     });
-    return listado;
-  }*/
+    console.log("profesionales::");
+
+    console.log(profesionales);
+    return profesionales;
+  }
+
+  async getPacientesByProfesionales(uidProfesional:string, estado:number){
+    let turnos :Array<any> = new Array<any>();
+    let pacientes :Array<any> = new Array<any>();
+    let turnosUfs =  await this.dbTurnosRef.ref.where("profesional.uid", "==", uidProfesional).where("estado","==",estado).get();
+    let encontrado=false;
+
+    turnosUfs.docs.map(function(x){
+      turnos.push(x.data());
+    }); 
+    turnos.forEach(t => {
+      pacientes.forEach(p => {
+        if(p.uid==t.paciente.uid)
+          encontrado=true;
+      });
+      if(encontrado==false)
+      {
+        pacientes.push(t.paciente);
+      }
+    });
+    console.log("pacientes::");
+
+    console.log(pacientes);
+    return pacientes;
+  }
 
 }

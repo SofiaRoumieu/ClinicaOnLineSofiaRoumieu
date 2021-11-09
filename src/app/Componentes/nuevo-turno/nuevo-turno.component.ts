@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { element } from 'protractor';
+import Swal from 'sweetalert2';
 import { Usuario } from 'src/app/clases/usuario';
 import { Turno} from 'src/app/clases/turno';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
 import { constructorParametersDownlevelTransform } from '@angular/compiler-cli';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nuevo-turno',
@@ -26,6 +28,7 @@ export class NuevoTurnoComponent implements OnInit {
   horaFormGroup: FormGroup;
   turno:Turno = new Turno();
   profesionales:any;
+  pacientes:any;
   especialidades:any;
   today = new Date();
   horas:Array<any> = [];
@@ -35,12 +38,10 @@ export class NuevoTurnoComponent implements OnInit {
   diasAtencion:Array<any>=new Array<any>();
   diasDisponibles:Array<any>=new Array<any>();
   turnosDisponibles:Array<any> = new Array<any>();
-   
 
-  constructor(private _formBuilder: FormBuilder,private data:DataService,private auth:AuthService) {}
+  constructor(private route: Router, private _formBuilder: FormBuilder, private data: DataService, private auth: AuthService) {}
 
   ngOnInit() {
-
     this.mostrarProfesionales=true;
     this.mostrarEspecialidades=false;
     this.mostrarFechas=false;
@@ -49,13 +50,18 @@ export class NuevoTurnoComponent implements OnInit {
 
     this.turnos =this.data.getTurnos();
     this.cargarProfesionales();
+    this.cargarPacientes();
     var uid="0";
     this.auth.getUserUid().then(res =>{
       uid = res.toString();
-      this.data.getUserByUid(uid)
-         .subscribe(res => {
-           this.usuario = res;
-         })
+      this.data.getUserByUid(uid).subscribe(res => {
+        this.usuario = res;
+        console.log(this.usuario.rol);
+        if(this.usuario.rol=='admin'){
+          this.mostrarPacientes=true;
+          this.mostrarProfesionales=false;
+        }
+      })
     }).catch(res =>{
      uid = res.toString();
      console.log("Sin Usuario");
@@ -71,11 +77,6 @@ export class NuevoTurnoComponent implements OnInit {
       fechaCtrl:['', Validators.required]
     });
   
-    console.log(this.usuario);
-    if(this.usuario.rol=='admin'){
-      this.mostrarPacientes=true;
-      this.mostrarProfesionales=false;
-    }
   }
 
   cargarProfesionales()
@@ -83,7 +84,17 @@ export class NuevoTurnoComponent implements OnInit {
     this.data.getProfesionales().then(res =>{
       if(res.length > 0)
       { 
-        this.profesionales = res; 
+        this.profesionales = res.filter(user => user.estado=='0'); 
+      }
+    });
+  }
+
+  cargarPacientes()
+  { 
+    this.data.getPacientes().then(res =>{
+      if(res.length > 0)
+      { 
+        this.pacientes = res; 
       }
     });
   }
@@ -108,11 +119,17 @@ export class NuevoTurnoComponent implements OnInit {
     
   }
 
+  tomarPaciente(dato:any)
+  {
+    this.mostrarPacientes=false
+    this.mostrarProfesionales=true;
+    this.turno.paciente = dato;
+  }
+
   cargarEspecialidades(especialidadesProfesional:any){
     this.especialidades=new Array<any>();
     especialidadesProfesional.forEach(element => {
       this.data.getEspecialidadesByNombre(element, this.especialidades).then(res =>{
-        //console.log(this.especialidades);
       });
     });
   }
@@ -208,7 +225,7 @@ export class NuevoTurnoComponent implements OnInit {
           dia = 3; 
         break;
         case "Jueves":
-          dia = 5; 
+          dia = 4; 
         break;
         case "Viernes":
           dia = 5; 
@@ -255,7 +272,7 @@ export class NuevoTurnoComponent implements OnInit {
       })
       if(turnosDisponibles.length==0)
       {
-        console.log("no hay turnos disponibles");
+        console.log("no hay turnos tomados");
       }
       else{
         if(turnosDisponibles.length==1){
@@ -314,14 +331,13 @@ export class NuevoTurnoComponent implements OnInit {
       let fe  = this.parserFecha(fecha);
       this.ExisteTurno(fe,element.hora,fecha.getDate(),element.dia,fecha.getMonth());
     }
-    let semana:Date = new Date();
-    console.log("diaa nro "+ element.dia);
+
+    let semana:Date = fecha;
     for (let i = 1; i < 3; i++) {
       let segundos=7*86399.9;
       semana.setSeconds(segundos);
       let sem = this.parserFecha(semana);
       this.ExisteTurno(sem,element.hora,this.transformFech(element.dia),element.dia,semana.getMonth());
-      //this.ExisteTurno(sem,element.hora,semana.getDate(),element.dia,semana.getMonth());
     }
   });
 }
@@ -379,7 +395,6 @@ export class NuevoTurnoComponent implements OnInit {
 
   cargarHora()
   {
-    
     this.horas = [];
     
     console.log("estamos en carga de hs");
@@ -434,14 +449,27 @@ export class NuevoTurnoComponent implements OnInit {
   }
      
   Entrar(){  
-    this.turno.paciente = this.usuario;
+    if(this.usuario.rol=='paciente')
+      this.turno.paciente = this.usuario;
 
     this.auth.registerTurnos(this.turno).then(res=>{
       console.log("Guarda bien el turno");
-      //this.toastr.success("Turno Guardado con Éxito");
+      Swal.fire({
+        title:'Registro de turno exitoso',
+        text:'El turno fue registrado satisfactoriamente',
+        icon:'success',
+        confirmButtonText:'Cerrar'
+      });
+      this.route.navigate(['home']);
     }).catch(error =>{
-      console.log("Pincho el turno pa");
+      Swal.fire({
+        title:'Error al registrar el turno',
+        text:'Error: '+ error,
+        icon:'success',
+        confirmButtonText:'Cerrar'
+      });
       console.info(error);
+      this.route.navigate(['home']);
     })
   }
    

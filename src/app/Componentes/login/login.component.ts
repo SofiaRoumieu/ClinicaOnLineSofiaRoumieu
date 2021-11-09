@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
   cargarProfesional(numero:number){
     switch(numero){
       case 1:
-        this.email = "profesional1@gmail.com" ;
+        this.email = "lucasvatano@gmail.com" ;
         this.clave = "123456";
         break;
       case 2:
@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
         this.clave = "123456";
         break;
       case 2:
-        this.email = "paciente2@gmail.com";
+        this.email = "sroumieu@provincianet.com.ar";
         this.clave = "123456";
         break;
       case 3:

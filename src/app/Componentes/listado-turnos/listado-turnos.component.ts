@@ -27,6 +27,8 @@ export class ListadoTurnosComponent implements OnInit {
   mostrarModalDetalle:boolean;
   cancelarPro:boolean;
   rechazarPro:boolean;
+  verResenia:boolean;
+
   constructor( private data:DataService,private auth:AuthService) { }
 
   ngOnInit(): void {
@@ -82,49 +84,37 @@ export class ListadoTurnosComponent implements OnInit {
   {
     this.mostrarModal = dato;
   }
+
   tomarTurno(turno:Turno)
   {
-    
-     this.turnoSeleccionado = turno;
-     this.mostrarModalDetalle = true;
-     console.log(turno);
-     console.log(this.mostrarModalDetalle);
+    this.turnoSeleccionado = turno;
+    this.mostrarModalDetalle = true;
+    console.log(turno);
+    console.log(this.mostrarModalDetalle);
   }
+
   cerrarModalDetalle(dato:any)
   { 
     this.mostrarModalDetalle = dato;
-
   }
-
 
   cancelar(turno:Turno)
   {   
-     if(this.usuario.rol == "paciente")
-     {
-       this.auth.updateEstadoTurno(turno,-1).then(res=>{
-        alert("modificado");
-        // this.toast.success("Turno Cancelado con éxito");
-       }).catch(error=>{
-        alert(error);
-         //this.toast.error("Hemos tenido un problema la cancelar el turno","Error");
-       })
-
-     }
-     else
-     {
-       
-       if(this.usuario.rol = "profesional")
-       { 
-         this.turnoSeleccionado = turno;
-         this.cancelarPro = true;
-         this.mostrarEncuesta(true);
-       }
-     }
+    this.turnoSeleccionado = turno;
+    this.cancelarPro = true;
+    this.mostrarModal = true;
   }
+
+  verReseniaModal(turno:Turno){
+    this.turnoSeleccionado = turno;
+    this.verResenia = true;
+    this.mostrarModal = true;
+  }
+
   rechazar(turno:Turno)
   {
-        this.rechazarPro = true;
-         this.mostrarEncuesta(true);
+    this.rechazarPro = true;
+    this.mostrarModal = true;//this.mostrarEncuesta(true);
   }
   aceptar(turno:Turno)
   {  
@@ -140,6 +130,7 @@ export class ListadoTurnosComponent implements OnInit {
   {
     this.rechazarPro = value;
     this.cancelarPro = value;
+    this.verResenia=value;
   }
 
 }

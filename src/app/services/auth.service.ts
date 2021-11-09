@@ -320,6 +320,18 @@ public uploadImgProf( usuario: Usuario, imagen1){
         }
       })
     }
+
+    DeshabilitarProfesional(profesioral:Usuario){
+      console.log("llego al servicio"+ profesioral);
+      console.log(profesioral.email);
+      this.getUserByMail(profesioral.email).then(res=>{
+        if(res.length > 0){ 
+          this.db.collection('usuarios').doc(res[0].uid).update({
+            'estado' :1
+          })
+        }
+      })
+    }
   
     async registerTurnos(turno:Turno){
       return new Promise((resolve, reject) =>{
@@ -375,12 +387,11 @@ public uploadImgProf( usuario: Usuario, imagen1){
       console.log(estado);
       return  this.db.collection('turnos').doc(turno.id.toString()).update({
         estado: estado,
-        
         }) 
 
     }
 
-  updateOpinion(turno:Turno,user:Usuario,valor:string,valor2:number,edad ?:number,temperatura?:number,presion?:number,datosAdicional?:Array<any>)
+  updateOpinion(turno:Turno,user:Usuario,valor:string,valor2:number,edad ?:number,temperatura?:number,presion?:number,peso?:number, altura?:number,datosAdicional?:Array<any>)
   { 
     if(user.rol == "paciente")
       {
@@ -398,6 +409,8 @@ public uploadImgProf( usuario: Usuario, imagen1){
         edad:edad,
         temperatura:temperatura,
         presion:presion,
+        peso:peso,
+        altura:altura,
         datosAdicionales:datosAdicional
       });
     }

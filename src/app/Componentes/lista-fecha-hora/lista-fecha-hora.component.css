@@ -18,10 +18,9 @@
   }
 
  .botonUsuarios{
-    overflow: hidden;
-    height: 250px;
-    width: 150px;
-    border-radius: 10%;
+    height:80px;
+    width: 80px;
+    margin-top: 50px;
  }
 
   .container{

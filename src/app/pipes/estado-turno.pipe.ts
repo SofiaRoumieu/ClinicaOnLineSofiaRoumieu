@@ -43,10 +43,15 @@ export class EstadoTurnoPipe implements PipeTransform {
                 {
                    retorno = "Cancelado por Profesional"; 
                 }
-                else
-                {
-                  retorno = "Finalizado";
+                else{
+                  if(value==-2){
+                    retorno = "Cancelado por Administrador"; 
+                  }
+                  else
+                  {
+                    retorno = "Finalizado";
 
+                  }
                 }
               }
             }

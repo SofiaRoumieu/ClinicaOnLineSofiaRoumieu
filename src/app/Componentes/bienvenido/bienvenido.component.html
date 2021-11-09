@@ -1,4 +1,4 @@
-<div class="contenedorCabecera" *ngIf="!seleccionado">
+<div class="contenedorCabecera" @enterState *ngIf="!seleccionado">
   <mat-card>
     <div class="row">
       <div class="col-4">
@@ -16,9 +16,17 @@
           <div class="col-4"><label><strong>E-Mail: </strong>{{usuario.email}}</label></div>
           <div *ngIf="tipoUsuario=='profesional'" class="col-4"><label><strong>Especialidades: </strong>{{usuario.especialidades}}</label></div>
         </div>
+        <!--<div *ngIf="tipoUsuario=='paciente'"  class="row">-->
         <div *ngIf="tipoUsuario=='paciente'"  class="row">
-          <button class="primary">Historia Clínica</button>
+          <button class="btn btn-primary" (click)="VerHistoriaClinica('todos')">Historia Clínica</button>
         </div>
+        <div *ngIf="tipoUsuario=='paciente'" style="margin-top: 10px;" class="row">
+          <div *ngFor="let profesional of profesionalesDelPaciente; let i = index" class="col-2 fab-button">
+            <img class="botonUsuarios mat-mini-fab"  [src]="profesional.img1" title="{{profesional.apellido}}" (click)="VerHistoriaClinica(profesional.uid)">
+              <!--<button mat-mini-fab class="botonUsuarios"  [src]="profesional.img1" (click)="VerHistoriaClinica(profesional.uid)"></button>-->
+          </div>
+        </div>
+        <!--</div>-->
       </div>
     </div>
   </mat-card>
@@ -58,9 +66,14 @@
       <img src="../../../assets/busqueda.png" alt="Avatar" class="avatar" style="max-height: 90%;"  >
     </div>
   </mat-card>
-  <mat-card *ngIf="tipoUsuario=='profesional'" class="containerInicioRegistro" title="Mis Turnos" (click)="MostrarComponente('horarios')">
+  <mat-card *ngIf="tipoUsuario=='profesional'" class="containerInicioRegistro" title="Mis Horarios" (click)="MostrarComponente('horarios')">
     <div  class="imgcontainer">
-      <img src="../../../assets/busqueda.png" alt="Avatar" class="avatar" style="max-height: 90%;"  >
+      <img src="../../../assets/alarma.png" alt="Avatar" class="avatar" style="max-height: 90%;"  >
+    </div>
+  </mat-card>
+  <mat-card *ngIf="tipoUsuario=='profesional'" class="containerInicioRegistro" title="Mis Pacientes" (click)="MostrarComponente('misPacientes')">
+    <div  class="imgcontainer">
+      <img src="../../../assets/medico.png" alt="Avatar" class="avatar" style="max-height: 90%;"  >
     </div>
   </mat-card>
 </div>

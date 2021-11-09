@@ -1,37 +1,19 @@
-<div class="divTitulo">
-  <h2>Seleccione un dia:</h2>
-</div>
-<div  class="contenedor">
-  <div *ngFor="let fecha of listado | sortTurnos  let i = index" style="text-align: center;">
-    <div (click)="seleccionarFecha(fecha)" class="containerInicioRegistro"> 
-      <div class="imgcontainer">
-        <label>{{fecha.nombre}}</label>
-        <br>
-        <label>{{fecha.fecha}}</label>
+<div @enterState>
+  <div class="divTitulo" style="text-align: center;margin-bottom: 50px;">
+    <h2>Seleccione un dia:</h2>
+  </div>
+  <div  class="contenedor">
+    <div *ngFor="let fecha of listado | sortTurnos  let i = index" style="text-align: center;">
+      <div (click)="seleccionarFecha(fecha)" class="containerInicioRegistro"> 
+        <div class="imgcontainer">
+          <label>{{fecha.nombre}}</label>
+          <br>
+          <label>{{fecha.fecha}}</label>
+        </div>
+        <div class="imgcontainer">
+          <img class="botonUsuarios" src="../../../assets/calendario(2).png">
+        </div>
       </div>
     </div>
-  </div>
+  </div>  
 </div>  
-
-<!--<div class="div1" *ngIf="listado">
-    <table class="table table-hover table-bordered animated fadeIn faster ld ld-slide-ttb-in">
-        <thead>
-          <tr class="bg-primary" style="color: white;">
-            <th>Fecha</th>
-            <th>Mes</th>
-            <th>Día </th>
-            <th>Hora</th>
-          </tr>
-        </thead>
-        <tbody >
-          <tr *ngFor="let fecha of listado | sortTurnos  let i = index" (click)="seleccionarFecha(fecha)">
-            <td>{{fecha.numero}} </td>
-            <td>{{fecha.mes |meses}} </td>
-            <td>{{fecha.nombre}} </td>
-            <td>{{fecha.hora}} </td>
-
-          </tr>     
-        </tbody>
-      </table>
-  </div>-->
-

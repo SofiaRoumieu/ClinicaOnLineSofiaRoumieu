@@ -18,6 +18,8 @@ export class VerTurnoComponent implements OnInit {
   edad:number;
   temperatura:number;
   presion:number;
+  altura:number;
+  peso:number;
   //listaDinamicos:Array<Dinamicos> = new  Array<Dinamicos>();
   listaDinamicos = [];
 
@@ -27,6 +29,7 @@ export class VerTurnoComponent implements OnInit {
   @Input() user:Usuario;
   @Input() mostrar:boolean;
   @Input() cancelar:boolean;
+  @Input() verResenia:boolean;
   @Input() rechazar:boolean;
   @Output() eventoMostrarModal = new EventEmitter<boolean>();
   @Output() eventoJustifacion = new EventEmitter<boolean>();
@@ -36,8 +39,8 @@ export class VerTurnoComponent implements OnInit {
   constructor(private auth:AuthService) { }
 
   ngOnInit(): void {
-    
-    
+    console.log(this.rechazar);
+    console.log(this.cancelar);
   }
   cerrar()
   {
@@ -65,7 +68,7 @@ export class VerTurnoComponent implements OnInit {
           if(this.user.rol == "profesional")
           { 
            // console.info(this.listaDinamicos);
-            this.auth.updateOpinion(this.turno,this.user,this.turno.opinionProfesional,this.turno.calificacionProfesional,this.edad,this.temperatura,this.presion,this.listaDinamicos).then(res=>{
+            this.auth.updateOpinion(this.turno,this.user,this.turno.opinionProfesional,this.turno.calificacionProfesional,this.edad,this.temperatura,this.presion,this.peso, this.altura,this.listaDinamicos).then(res=>{
               //this.toas.success("Encuesta Guardada con éxito");
               this.auth.updateEstadoTurno(this.turno,3);
               this.eventoMostrarModal.emit(false);
@@ -82,10 +85,24 @@ export class VerTurnoComponent implements OnInit {
     {
       if(this.cancelar)
       {  
-       
+        let estado:number;
+        if(this.user.rol == "profesional")
+        { 
+          estado=4;
+        }
+        else{
+          if(this.user.rol == "admin")
+          {
+            estado=-2;
+          }
+          else{
+            estado=-1;
+          }
+        }
+        console.log(estado);
           this.auth.upadteJustificacion(this.turno,this.turno.comentario).then(res =>{
             //this.toas.success("Justificación Guardada con éxito");
-            this.auth.updateEstadoTurno(this.turno,4);
+            this.auth.updateEstadoTurno(this.turno,estado);
             this.eventoMostrarModal.emit(false);
 
           })
