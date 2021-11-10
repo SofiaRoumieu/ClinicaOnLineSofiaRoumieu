@@ -9,11 +9,11 @@ import { trigger, transition, style, animate, state} from '@angular/animations';
   animations: [
     trigger('enterState', [
      state('void', style({
-       transform: 'translateX(-100%)',
+       transform: 'translateX(100%)',
        opacity:0
      })), 
      transition(':enter',[
-       animate(3000, style({
+       animate(2000, style({
         transform:'translateX(0)',
          opacity:1
        }))

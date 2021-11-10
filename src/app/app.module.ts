@@ -62,6 +62,7 @@ import { VerTurnoDetalleComponent } from './Componentes/ver-turno-detalle/ver-tu
 import { CalificacionPipe } from './pipes/calificacion.pipe';
 import { ListaHorasComponent } from './Componentes/lista-horas/lista-horas.component';
 import { ListaPacientesComponent } from './Componentes/lista-pacientes/lista-pacientes.component';
+import { TurnosMisPacientesComponent } from './Componentes/turnos-mis-pacientes/turnos-mis-pacientes.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +92,7 @@ import { ListaPacientesComponent } from './Componentes/lista-pacientes/lista-pac
     CalificacionPipe,
     ListaHorasComponent,
     ListaPacientesComponent,
+    TurnosMisPacientesComponent,
   ],
   imports: [
     BrowserModule,
@@ -117,7 +119,6 @@ import { ListaPacientesComponent } from './Componentes/lista-pacientes/lista-pac
     MatSidenavModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    //MatDivider,
     AngularFireModule.initializeApp(firebase),
     AngularFirestoreModule, // firestore
     AngularFireAuthModule, // auth

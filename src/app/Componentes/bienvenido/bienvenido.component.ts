@@ -23,7 +23,7 @@ pdfMake.vfs=pdfFonts.pdfMake.vfs;
   animations: [
     trigger('enterState', [
      state('void', style({
-       transform: 'translateX(-100%)',
+       transform: 'translateX(100%)',
        opacity:0
      })), 
      transition(':enter',[

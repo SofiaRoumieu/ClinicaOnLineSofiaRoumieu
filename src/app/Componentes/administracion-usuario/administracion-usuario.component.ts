@@ -7,6 +7,10 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {PdfMakeWrapper, Txt, Img,Table} from 'pdfmake-wrapper';
 import { Usuario } from 'src/app/clases/usuario';
 import Swal from 'sweetalert2';
+import { Workbook } from 'exceljs';
+import * as fs from 'file-saver';
+import { Turno } from 'src/app/clases/turno';
+
 
 @Component({
   selector: 'app-administracion-usuario',
@@ -15,12 +19,17 @@ import Swal from 'sweetalert2';
 })
 export class AdministracionUsuarioComponent implements OnInit {
 
+  //exportacion excel
   solapaAMostrar:string;
   usuario:Usuario;
   tipoUsuario: string;
-  pacientesDelProfesional:any;;
+  pacientesDelProfesional:any;
+  mostrarModalTurnosMisPacientes:boolean;
+  usuarioSeleccionado:Usuario;
 
   listaUsuarios=[];
+  listadoTurnosMiPaciente:any;
+  listaTurnos:Array<Turno>= new Array<Turno> ();
 
   pacientes;
   pacientesPag;
@@ -48,15 +57,12 @@ export class AdministracionUsuarioComponent implements OnInit {
       { 
         this.usuario=res[0];
         this.tipoUsuario=res[0].rol;
-        console.log(this.tipoUsuario);
         if(this.usuario.rol=='profesional'){
           this.solapaAMostrar="pacientes";
           this.dataService.getPacientesByProfesionales(this.usuario.uid,5).then(res =>{
             if(res.length > 0)
             { 
               this.pacientesDelProfesional=res;
-              console.log("imprimimos lista de profesionales de mi paciente");
-              console.log(this.pacientesDelProfesional);
             }
         });
         }
@@ -87,7 +93,92 @@ export class AdministracionUsuarioComponent implements OnInit {
     this.router.navigate(['/registro']);  
   }
 
-  VerHistoriaClinica(paciente:Usuario){
+  verTurnos(paciente:Usuario){
+    this.dataService.getTurnosPorPacienteYPorProfesional(paciente.uid,this.usuario.uid).then(async res =>{
+      
+      console.log(res.length);
+      
+      if(res.length > 0)
+      {
+        this.listadoTurnosMiPaciente=res;
+      }
+    });
+    console.log("turnos");
+    console.log(this.listadoTurnosMiPaciente);
+    this.usuarioSeleccionado=paciente;
+    this.mostrarModalTurnosMisPacientes=true;
+  }
+
+  cerrarModalDetalle(dato:any)
+  { 
+    this.mostrarModalTurnosMisPacientes = dato;
+  }
+
+  VerTurnosAgendados(paciente:Usuario){
+    this.dataService.getTurnos().subscribe(res =>{
+      this.listaTurnos = res.filter(res => res.paciente.uid == paciente.uid );
+      
+      let workbook = new Workbook();
+      let worksheet = workbook.addWorksheet("Turnos del usuario");
+      let header=["Nombre Profesional","Apellido Profesional", "Especialidad", "Fecha", "Hora", "Estado del turno"]
+      let headerRow = worksheet.addRow(header);
+      
+      for (let x1 of this.listaTurnos)
+      {
+        let temp=[];
+        let estado:string;
+        estado=this.BuscarEstado(x1['estado']);
+        temp.push(x1['profesional']['nombre']);
+        temp.push(x1['profesional']['apellido']);
+        temp.push(x1['especialidad']);
+        temp.push(x1['fecha']);
+        temp.push(x1['hora']);
+        temp.push(estado);
+        worksheet.addRow(temp)
+      }
+
+      let fname="Turnos"+'-'+paciente.apellido+'_'+paciente.nombre;
+
+      workbook.xlsx.writeBuffer().then((data) => {
+        let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        fs.saveAs(blob, fname+'.xlsx');
+      });
+
+    })
+      
+  }
+  BuscarEstado(estado:number){
+    let estadoString:string="";
+    switch(estado){
+      case -2:
+        estadoString='Cancelado por administrador';
+        break;
+      case -1:
+        estadoString='Cancelado por paciente'
+        break;
+      case 0:
+        estadoString='Pendiente'
+        break;
+      case 1:
+        estadoString='Aceptado'
+        break;
+      case 2:
+        estadoString='Rechazado'
+        break;
+      case 3:
+        estadoString='En atención'
+        break;
+      case 4:
+        estadoString='Cancelado por profesional'
+        break;
+      case 5:
+        estadoString='Finalizado'
+        break;
+    }
+    return estadoString;
+  }
+
+  VerAtenciones(paciente:Usuario){
     let hoy=new Date();
     let fecha= hoy.getDate()+"/"+ Number(hoy.getMonth()+1)+"/"+hoy.getFullYear();
 
@@ -95,7 +186,7 @@ export class AdministracionUsuarioComponent implements OnInit {
       this.dataService.getTurnosPorEstadoYPorPaciente(paciente.uid,5).then(async res =>{
         const miPdf= new PdfMakeWrapper();
         miPdf.add( await new Img('../../../assets/icono.png').width(100).height(100).margin([200,20]).build() );
-        miPdf.add( new Txt('Historia clínica de '+ paciente.nombre + " " + paciente.apellido+" en Clínica SR").bold().fontSize(15).alignment("center").margin(15).end);
+        miPdf.add( new Txt('Historial de atención al '+ paciente.nombre + " " + paciente.apellido+" con el profesional " + this.usuario.nombre + " "+ this.usuario.apellido).bold().fontSize(15).alignment("center").margin(15).end);
         miPdf.add( new Txt('Fecha de emisión: ' + fecha).margin(20).alignment("center").end);
         
         if(res.length > 0)

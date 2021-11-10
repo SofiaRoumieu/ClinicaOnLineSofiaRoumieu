@@ -278,7 +278,6 @@ public uploadImgProf( usuario: Usuario, imagen1){
 
       let usrsRef = await this.dbUsersRef.ref.where("email", "==", email).get();
       let listado:Array<any> = new Array<any>();
-      console.log(usrsRef);
       usrsRef.docs.map(function(x){
           listado.push(x.data());
       });

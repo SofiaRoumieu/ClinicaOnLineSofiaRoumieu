@@ -33,7 +33,8 @@
                         <th scope="col">Obra Social</th>
                         <th scope="col">Foto de Perfil</th>
                         <th scope="col">Foto de Perfil</th>
-                        <th scope="col">Historia Clínica</th>
+                        <th *ngIf="tipoUsuario=='admin'" scope="col">Turnos agendados</th>
+                        <th *ngIf="tipoUsuario=='profesional'" scope="col">Atenciones realizadas</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,7 +47,8 @@
                         <td>{{paciente.obraSocial}}</td>
                         <td><img class="fotoTabla" [src]="paciente.img1"></td>
                         <td><img class="fotoTabla" [src]="paciente.img2"></td>
-                        <td><button  (click)="VerHistoriaClinica(paciente)">Ver</button></td>
+                        <td *ngIf="tipoUsuario=='admin'"><button  (click)="VerTurnosAgendados(paciente)">Descargar xls</button></td><!---->
+                        <td *ngIf="tipoUsuario=='profesional'"><button (click)="verTurnos(paciente)" >Ver</button></td><!--(click)="VerAtenciones(paciente)"-->
                     </tr>
                 </tbody>
             </table>
@@ -115,4 +117,7 @@
     </mat-card>
     
 </div>
+
+<!--<app-ver-turno-detalle [turno]="undefined" [user]="usuario" [mostrar]="mostrarModalTurnosMisPacientes"(eventoMostrarModal)="cerrarModalDetalle($event)"></app-ver-turno-detalle>-->
+<app-turnos-mis-pacientes [user]="usuario" [paciente]="usuarioSeleccionado" [listado]="listadoTurnosMiPaciente" [mostrar]="mostrarModalTurnosMisPacientes" (eventoMostrarModal)="cerrarModalDetalle($event)"></app-turnos-mis-pacientes>
 

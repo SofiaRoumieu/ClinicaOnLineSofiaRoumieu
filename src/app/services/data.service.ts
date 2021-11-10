@@ -135,6 +135,17 @@ export class DataService {
     return turnos;
   }
 
+  async getTurnosPorPacienteYPorProfesional(uidPaciente:string, uidProfesional:string){
+    console.log("buscando turnos");
+    let turnos :Array<any> = new Array<any>();
+    let turnosUfs =  await this.dbTurnosRef.ref.where("paciente.uid", "==", uidPaciente).where("profesional.uid","==",uidProfesional).get();
+     
+    turnosUfs.docs.map(function(x){
+      turnos.push(x.data());
+    }); 
+    return turnos;
+  }
+
   async getProfesionalesByPacientes(uidPaciente:string, estado:number){
     let turnos :Array<any> = new Array<any>();
     let profesionales :Array<any> = new Array<any>();
@@ -179,9 +190,6 @@ export class DataService {
         pacientes.push(t.paciente);
       }
     });
-    console.log("pacientes::");
-
-    console.log(pacientes);
     return pacientes;
   }
 
