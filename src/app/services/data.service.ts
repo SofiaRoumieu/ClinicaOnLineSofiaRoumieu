@@ -135,6 +135,19 @@ export class DataService {
     return turnos;
   }
 
+  async getTurnosPorEstadoPorPacientePorFechaYHora(uidPaciente:string, fecha: string, hora:string){
+    let turnos :Array<any> = new Array<any>();
+    let turnosUfs =  await this.dbTurnosRef.ref.where("paciente.uid", "==", uidPaciente).where("hora", "==", hora).where("fecha", "==", fecha).get();
+     
+    turnosUfs.docs.map(function(x){
+      turnos.push(x.data());
+    }); 
+    console.log("turnos::");
+
+    console.log(turnos);
+    return turnos;
+  }
+
   async getTurnosPorPacienteYPorProfesional(uidPaciente:string, uidProfesional:string){
     let turnos :Array<any> = new Array<any>();
     let turnosUfs =  await this.dbTurnosRef.ref.where("paciente.uid", "==", uidPaciente).where("profesional.uid","==",uidProfesional).get();

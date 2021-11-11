@@ -362,55 +362,6 @@ export class NuevoTurnoComponent implements OnInit {
   });
 }
 
-  /*cargarHora()
-  {
-    this.horas = [];
-    let horasAux=[];
-    let date = new Date(this.turno.fecha);
-    date.setSeconds(86399.9);
-    console.log(date);
-    let dia="";
-    let dias=[];
-    console.log("date::" + date);
-    switch(date.getDay())
-    {
-      case 1:
-        dia = "Lunes";
-        break;
-      case 2:
-         dia = "Martes";
-        break;
-      case 3:
-        dia = "Miércoles";
-
-        break;
-      case 4:
-        dia = "Jueves";
-        
-        break;
-      case 5:
-        dia = "Viernes";
-
-        break;
-      case 6:
-        dia = "Sábado";
-        
-        break;
-      case 6:
-        dia = "Domingo";
-
-        break;
-    }
-    dias = this.turno.profesional.atencion.filter(function(x){return x.dia == dia})
-    if(dias.length>0)
-    {
-       this.horas = dias.map(function(x){return x.hora});
-       console.info(this.horas);
-    }
-    else
-    {
-    }
-  }*/
 
   cargarHora()
   {
@@ -490,27 +441,39 @@ export class NuevoTurnoComponent implements OnInit {
   Entrar(){  
     if(this.usuario.rol=='paciente')
       this.turno.paciente = this.usuario;
-
-    this.auth.registerTurnos(this.turno).then(res=>{
       
-      Swal.fire({
-        title:'Registro de turno exitoso',
-        text:'El turno fue registrado satisfactoriamente',
-        icon:'success',
-        confirmButtonText:'Cerrar'
-      });
-      this.route.navigate(['home']);
-    }).catch(error =>{
-      Swal.fire({
-        title:'Error al registrar el turno',
-        text:'Error: '+ error,
-        icon:'success',
-        confirmButtonText:'Cerrar'
-      });
-      console.info(error);
-      this.route.navigate(['home']);
-    })
+    this.data.getTurnosPorEstadoPorPacientePorFechaYHora(this.turno.paciente.uid, this.turno.fecha.toString(), this.turno.hora.toString()).then(async res =>{
+      if(res.length > 0)
+      {
+        Swal.fire({
+          title:'Error al registrar el turno',
+          text:'El paciente ya tiene un turno tomado ese dia y a esa hora.',
+          icon:'error',
+          confirmButtonText:'Cerrar'
+        });
+      }
+      else{
+        this.auth.registerTurnos(this.turno).then(res=>{
+      
+          Swal.fire({
+            title:'Registro de turno exitoso',
+            text:'El turno fue registrado satisfactoriamente',
+            icon:'success',
+            confirmButtonText:'Cerrar'
+          });
+          this.route.navigate(['home']);
+        }).catch(error =>{
+          Swal.fire({
+            title:'Error al registrar el turno',
+            text:'Error: '+ error,
+            icon:'error',
+            confirmButtonText:'Cerrar'
+          });
+          console.info(error);
+          this.route.navigate(['home']);
+        })
+      }
+      
+    });
   }
-   
-  
 }
