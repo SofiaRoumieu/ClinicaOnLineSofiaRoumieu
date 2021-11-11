@@ -34,3 +34,8 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+.fab-button:hover {
+  z-index: 1000;
+  transform: scale(1.2);
+}

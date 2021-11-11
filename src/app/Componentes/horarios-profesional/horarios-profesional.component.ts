@@ -1,9 +1,8 @@
 import { Component, OnInit} from '@angular/core';
-import { timeStamp } from 'console';
-import { timer } from 'rxjs';
 import { Usuario } from 'src/app/clases/usuario';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-horarios-profesional',
@@ -20,8 +19,8 @@ export class HorariosProfesionalComponent implements OnInit {
   hora:any;
   profesional:any = new Usuario();
   displayedColumns: string[] = ['Nombre', 'Día', 'Hora','Acción'];
+
   ngOnInit(): void {
-  
     var uid="0";
     this.auth.getUserUid().then(res =>{
       uid = res.toString();
@@ -31,26 +30,21 @@ export class HorariosProfesionalComponent implements OnInit {
          })
     }).catch(res =>{
      uid = res.toString();
-     console.log("Sin Usuario");
     });
   }
 
   myFilter = (d: Date | null): boolean => {
     const day = (d || new Date()).getDay();
-    // Prevent Saturday and Sunday from being selected.
     return day !== 0 ;
   }
+
   setHorarios(inicio:number,final:number)
   {
      this.horarios = [];
      for (let index = inicio; index < final; index++) {
-       
        let time = index + ":" + "00";
        this.horarios.push(time);
     } 
-
-    console.info(this.horarios);
-
   }
 
   sabado()
@@ -62,7 +56,6 @@ export class HorariosProfesionalComponent implements OnInit {
     else
     {
       this.setHorarios(8,20);
-
     }
   }
 
@@ -76,21 +69,27 @@ export class HorariosProfesionalComponent implements OnInit {
     })
     nuev[0].push({dia:this.dia,hora:this.hora});
     
-     this.profesional.atencion = nuev[0];
-    console.log(this.profesional.atencion);
+    this.profesional.atencion = nuev[0];
 
     this.auth.updateHorario(this.profesional).then(res =>{
-       //this.toast.success("Día y horario guardado con éxito");
+      Swal.fire({
+        title:'Horario cargado',
+        text:'El horario de atención ha sido cargado exitosamente',
+        icon:'success',
+        confirmButtonText:'Cerrar'
+      });
     }).catch(error =>{
-      //this.toast.error(error,"Error");
+      Swal.fire({
+        title:'Error al cargar horario',
+        text:'Error' + error,
+        icon:'error',
+        confirmButtonText:'Cerrar'
+      });
     });
-
-    
   }
 
   eliminar(item)
   { 
-   // console.log(item);
      let aux:Array<any> = new Array();
      let nuev:Array<any> = new Array();
 
@@ -100,13 +99,19 @@ export class HorariosProfesionalComponent implements OnInit {
      
      this.profesional.atencion = aux[0];
      this.auth.updateHorario(this.profesional).then(res =>{
-      //this.toast.success("Registro Eliminado con éxito");
+      Swal.fire({
+        title:'Horario eliminado',
+        text:'El horario de atención ha sido eliminado exitosamente, aquellos turnos que hubiesen sido tomados fueron cancelados.',
+        icon:'success',
+        confirmButtonText:'Cerrar'
+      });
    }).catch(error =>{
-    // this.toast.error(error,"Error");
+    Swal.fire({
+      title:'Error el eliminar horario',
+      text:'Error' + error,
+      icon:'error',
+      confirmButtonText:'Cerrar'
+    });
    });
-
-
-    
   }
-
 }

@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DataService } from 'src/app/services/data.service';
 import { trigger, transition, style, animate, state} from '@angular/animations';
 
 @Component({
@@ -27,15 +26,13 @@ export class ListaHorasComponent implements OnInit {
   @Input() listado:any;
   @Output() enventoHorario = new EventEmitter<any>();
   
-  constructor(private data:DataService) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
 
   seleccionarHorario(dato:any)
   {  
-    console.log("cuando hacemos clic en una hora::");
-    console.log(dato);
      this.enventoHorario.emit(dato);
   }
 

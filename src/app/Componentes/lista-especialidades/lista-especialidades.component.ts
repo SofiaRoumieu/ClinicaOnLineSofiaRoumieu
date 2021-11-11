@@ -24,7 +24,6 @@ import { trigger, transition, style, animate, state} from '@angular/animations';
 })
 export class ListaEspecialidadesComponent implements OnInit {
 
-  //listado:any;
   col:string = "";
   dis:boolean = false;
   @Output() enventoEspecialidad = new EventEmitter<any>();

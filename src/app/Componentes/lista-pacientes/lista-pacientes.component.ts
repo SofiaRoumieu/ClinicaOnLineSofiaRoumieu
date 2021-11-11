@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DataService } from 'src/app/services/data.service';
 import { trigger, transition, style, animate, state} from '@angular/animations';
 
 @Component({
@@ -22,11 +21,10 @@ import { trigger, transition, style, animate, state} from '@angular/animations';
 })
 export class ListaPacientesComponent implements OnInit {
 
-  //@Input() especialidad:string;
   @Input() listado:any;
   @Output() eventoPaciente = new EventEmitter<any>();
   
-  constructor(private data:DataService) { }
+  constructor() { }
 
   ngOnInit(): void {
     

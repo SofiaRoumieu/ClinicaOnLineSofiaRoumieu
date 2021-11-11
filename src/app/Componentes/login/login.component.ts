@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { firestore } from 'firebase';
-import {ApiService} from '../../services/api.service';
 import Swal from 'sweetalert2';
+import { ConstantPool } from '@angular/compiler';
 
 @Component({
   selector: 'app-login',
@@ -15,24 +15,15 @@ import Swal from 'sweetalert2';
 export class LoginComponent implements OnInit {
 
   usuario = new Usuario();
-  registro = false;
-  emailClass:'';
-  claveClass:'';
   email:string;
   clave:string;
-  recaptcha: any=false;
-  //siteKey:string;
-  desa:boolean = false;
   estadoUsuario:number;
   rol:string;
 
   constructor(private route: Router,
               private authService: AuthService,
-              private db: AngularFirestore,
-              private api: ApiService) {
+              private db: AngularFirestore) {
 
-//this.api.ObtenerPaises().subscribe((paises:any)=>{console.log(paises)}, error=>{console.log(error)});
-//this.api.ObtenerMiGit().subscribe((miGit:any)=>{console.log(miGit)}, error=>{console.log(error)});
 }
           
   ngOnInit() {
@@ -47,7 +38,7 @@ export class LoginComponent implements OnInit {
   cargarProfesional(numero:number){
     switch(numero){
       case 1:
-        this.email = "lucasvatano@gmail.com" ;
+        this.email = "castrorosanap@gmail.com" ;
         this.clave = "123456";
         break;
       case 2:
@@ -56,6 +47,7 @@ export class LoginComponent implements OnInit {
         break;
     }
   }
+
   cargarPaciente(numero:number){
     switch(numero){
       case 1:
@@ -67,16 +59,15 @@ export class LoginComponent implements OnInit {
         this.clave = "123456";
         break;
       case 3:
-        this.email = "paciente3@gmail.com";
+        this.email = "lote_720@hotmail.com";
         this.clave = "123456";
         break;
     }
   }
 
-
   Ingresar() {
-    console.log(this.email," + ", this.clave);
     
+    if(this.email!='' && this.email!= undefined && this.clave!=undefined && this.clave!=''){
     this.authService.getUserByMail(this.email).then(res =>{
       if(res.length > 0)
       { 
@@ -93,7 +84,6 @@ export class LoginComponent implements OnInit {
         }
         else{
           this.authService.signIn(this.email, this.clave).then(res => {
-            console.log('Login exitoso', res);
             this.usuario.email=this.email;
             this.usuario.pass=this.clave;
       
@@ -105,7 +95,6 @@ export class LoginComponent implements OnInit {
             .then(docRef => {
               localStorage.setItem('usuario', JSON.stringify(this.usuario));
               this.route.navigate(['home']);
-              console.log('Document written with ID: ', docRef.id);
             })
             .catch(error => {
                 console.error('Error adding document: ', error);
@@ -117,17 +106,22 @@ export class LoginComponent implements OnInit {
               icon:'error',
               confirmButtonText:'Cerrar'
             });
-            console.log('Login error: ', error);
-            this.route.navigate(['error']);
           });
         }
 
       }
-    })
+    })}
+    else{
+      Swal.fire({
+        title:'Datos incompletos',
+        text:'Debe completar el e-mail y la contraseña para poder ingresar al sistema',
+        icon:'error',
+        confirmButtonText:'Cerrar'
+      });
+    }
   }
 
   Registrar() {
-    console.log(this.usuario);
     this.authService.register(this.usuario).then(res => {
       Swal.fire({
         title:'Registro exitoso',
@@ -142,7 +136,6 @@ export class LoginComponent implements OnInit {
       .then(docRef => {
         localStorage.setItem('usuario', JSON.stringify(this.usuario));
         this.route.navigate(['home']);
-        console.log('Document written with ID: ', docRef.id);
       })
       .catch(error => {
           console.error('Error adding document: ', error);
@@ -157,5 +150,4 @@ export class LoginComponent implements OnInit {
       this.route.navigate(['error']);
     });
   }
-
 }

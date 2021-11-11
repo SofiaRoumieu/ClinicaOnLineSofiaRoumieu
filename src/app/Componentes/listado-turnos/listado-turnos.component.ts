@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
 import { Usuario } from 'src/app/clases/usuario';
 import { Turno } from 'src/app/clases/turno';
-//import { Dinamicos } from 'src/app/models/models.module';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
 
@@ -21,7 +19,7 @@ export class ListadoTurnosComponent implements OnInit {
   escribir:string;
   adicional:string;
   dia:string;
-  listaDinamicos:Array<any>;//Array<Dinamicos>;
+  listaDinamicos:Array<any>;
   turnoSeleccionado:Turno;
   mostrarModal:boolean;
   mostrarModalDetalle:boolean;
@@ -32,8 +30,6 @@ export class ListadoTurnosComponent implements OnInit {
   constructor( private data:DataService,private auth:AuthService) { }
 
   ngOnInit(): void {
-    console.log("rol del usuario:::");
-    console.log(this.usuario.rol);
     var uid="0";
      this.auth.getUserUid().then(res =>{
        uid = res.toString();
@@ -43,43 +39,30 @@ export class ListadoTurnosComponent implements OnInit {
             if(this.usuario.rol == "paciente")
             {
               this.data.getTurnos().subscribe(res =>{
-            
-              console.info(this.usuario.dni);
-              this.listado = res.filter(res => res.paciente.dni == this.usuario.dni && res.estado != -1);
-                
+              this.listado = res.filter(res => res.paciente.uid == this.usuario.uid && res.estado != -1);
               })
-
             }
             else
             {
               if(this.usuario.rol == "profesional")
               {
                 this.data.getTurnos().subscribe(tur =>{
-
-                  this.listado = tur.filter(res => res.profesional.dni == this.usuario.dni);
-            
-                    
-                  })
+                  this.listado = tur.filter(res => res.profesional.uid == this.usuario.uid);
+                })
               }
               else
               {
                 this.data.getTurnos().subscribe(res =>{
-        
                   this.listado = res
-                    
-                  })
+                })
               }
             }
-            
           })
      }).catch(res =>{
       uid = res.toString();
-      console.log("Sin Usuario");
      });
-
-
-
   } 
+
   mostrarEncuesta(dato:boolean)
   {
     this.mostrarModal = dato;
@@ -89,8 +72,6 @@ export class ListadoTurnosComponent implements OnInit {
   {
     this.turnoSeleccionado = turno;
     this.mostrarModalDetalle = true;
-    console.log(turno);
-    console.log(this.mostrarModalDetalle);
   }
 
   cerrarModalDetalle(dato:any)

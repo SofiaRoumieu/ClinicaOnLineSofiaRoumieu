@@ -111,8 +111,6 @@ export class NuevoTurnoComponent implements OnInit {
     else{
       this.turno.especialidad=dato.especialidades[0];
       this.mostrarEspecialidades=false;
-     
-      //this.turnosDisponibles = [];
       this.mostrarFechas=true;
       this.CargarDiasDisponibles();
     }
@@ -157,15 +155,9 @@ export class NuevoTurnoComponent implements OnInit {
     const {​​ nombre }​​ = this.firstFormGroup.value;
     
     this.turno.especialidad = dato.nombre;
-    console.log("tomamos especialidad::"+dato.nombre);
-
-    //this.turnosDisponibles = [];
     this.mostrarEspecialidades=false;
     this.mostrarFechas=true;
     this.CargarDiasDisponibles();
-    //this.Fechas();
-    console.log("turnos disponibles::");
-    console.log(this.turnosDisponibles);
     this.turnosDisponibles.forEach(element => {console.log("recorriendo los turnos"); console.log(element)});
     //if(this.turnosDisponibles.length>0)
       this.EvaluarDiasDisponibles();
@@ -239,27 +231,18 @@ export class NuevoTurnoComponent implements OnInit {
 
   tomarFecha(evento:any)
   { 
-    console.log("fecha seleccionada:::");
-    console.log(evento.fecha);
     this.turno.fecha = evento.fecha;
-    console.log(this.turnosDisponibles);
-    //this.turno.hora = evento.hora;
     this.mostrarFechas=false;
     this.mostrarHoras=true;
     this.cargarHora();
-    console.log(this.turno.fecha);
-    console.log("horas:::");
-    console.log(this.horas);
   }
 
   tomarHora(evento:any){
     this.turno.hora = evento;
-    //this.turno.hora = evento.hora;
-    console.log(this.turno.hora);
     this.Entrar();
   }
 
-  ExisteTurno(fecha:string,hora:any,num:number,dia:string,mes:number)
+  /*ExisteTurno(fecha:string,hora:any,num:number,dia:string,mes:number)
   { 
     console.log("numero::"+num);
      let turnosDisponibles = [];
@@ -270,6 +253,7 @@ export class NuevoTurnoComponent implements OnInit {
           this.turnosDisponibles.push({fecha:fecha,hora:hora,numero:num,nombre:dia,mes:mes+1});
         }   
       })
+
       if(turnosDisponibles.length==0)
       {
         console.log("no hay turnos tomados");
@@ -284,6 +268,42 @@ export class NuevoTurnoComponent implements OnInit {
         }
       }
   }
+*/
+  ExisteTurno(fecha:string,hora:any,num:number,dia:string,mes:number)
+  { 
+     let turnosDisponibles = [];
+     let encontrado:boolean=false;
+
+     this.data.TurnoFecha(fecha,hora).then(res =>{
+        turnosDisponibles = res;
+        if(turnosDisponibles.length == 0)
+        { 
+          this.turnosDisponibles.forEach(t => {
+              if(fecha==t.fecha)
+                encontrado=true;
+          });
+          if(encontrado==false)
+            {
+              this.turnosDisponibles.push({fecha:fecha,hora:hora,numero:num,nombre:dia,mes:mes+1});
+            }
+        }   
+      })
+      if(turnosDisponibles.length==0)
+      {
+        console.log("no hay turnos tomados");
+      }
+      else{
+       
+        if(turnosDisponibles.length==1){
+          this.mostrarFechas=false;
+          this.mostrarHoras=true;
+        }
+        else{
+          this.mostrarFechas=true;
+        }
+      }
+  }
+
 
   OrdenarLista()
   {
@@ -342,69 +362,16 @@ export class NuevoTurnoComponent implements OnInit {
   });
 }
 
-  /*Fechas()
-  {
-    let day = new Date();
-    let turnosDisponibles = [];
-    //let horas = [];
-
-    this.turno.profesional.atencion.forEach(element => {
-       
-    let dia = this.transformFech(element.dia);
-    let dif = day.getDay() - dia;
-    
-    let fecha:Date = new Date();
-    
-    if(dif > 0)
-    { 
-      fecha.setDate(fecha.getDate() - dif);
-    }
-    else
-    {  
-      if(dif<0)
-      {
-        fecha.setDate(fecha.getDate() - dif);
-      }
-      else
-      {
-        
-      }
-      
-    }
-    if(dif <1)
-    {
-      let fe  = this.parserFecha(fecha);
-      this.ExisteTurno(fe,element.hora,fecha.getDate(),element.dia,fecha.getMonth());
-
-    }
-    let semana:Date = new Date();
-     
-   for (let i = 1; i < 4; i++) {
-     semana.setDate(fecha.getDate()+7*i);
-     let sem = this.parserFecha(semana)
-     this.ExisteTurno(sem,element.hora,semana.getDate(),element.dia,semana.getMonth());
-     
-   }
-   // turnosDisponibles.push({fecha:fecha,hora:element.hora});
-    
-   // console.info(turnosDisponibles);
-
-    });
-  }*/
- 
-
-  cargarHora()
+  /*cargarHora()
   {
     this.horas = [];
-    
-    console.log("estamos en carga de hs");
-    console.log(this.turno);
+    let horasAux=[];
     let date = new Date(this.turno.fecha);
     date.setSeconds(86399.9);
     console.log(date);
     let dia="";
     let dias=[];
-    console.info();
+    console.log("date::" + date);
     switch(date.getDay())
     {
       case 1:
@@ -434,8 +401,6 @@ export class NuevoTurnoComponent implements OnInit {
 
         break;
     }
-   // this.horas = this.turno.profesional.atencion.map(function(x){return x.hora});
-   console.log(dia);
     dias = this.turno.profesional.atencion.filter(function(x){return x.dia == dia})
     if(dias.length>0)
     {
@@ -444,7 +409,81 @@ export class NuevoTurnoComponent implements OnInit {
     }
     else
     {
-      //this.toastr.warning("El profesional no atiende el dia de la semana indicado");
+    }
+  }*/
+
+  cargarHora()
+  {
+    
+    this.horas = [];
+    let horasAux=[];
+    let turnosTomadosAux=[];
+    let encontrado=false;
+    let date = new Date(this.turno.fecha);
+    
+    date.setSeconds(86399.9);
+    
+    let dia="";
+    let dias=[];
+    switch(date.getDay())
+    {
+      case 1:
+        dia = "Lunes";
+        break;
+      case 2:
+         dia = "Martes";
+        break;
+      case 3:
+        dia = "Miércoles";
+
+        break;
+      case 4:
+        dia = "Jueves";
+        
+        break;
+      case 5:
+        dia = "Viernes";
+
+        break;
+      case 6:
+        dia = "Sábado";
+        
+        break;
+      case 6:
+        dia = "Domingo";
+
+        break;
+    }
+    dias = this.turno.profesional.atencion.filter(function(x){return x.dia == dia})
+    if(dias.length>0)
+    {
+      //obtengo las horas de las atenciones
+      horasAux = dias.map(function(x){return x.hora});
+      
+      //obtengo los turnos agendados del dia elegido y el profesional elegido
+      this.data.getTurnosPorFechaYPorProfesional(this.turno.profesional.uid, this.turno.fecha.toString()).then(async res =>{
+        
+        if(res.length > 0)
+        {
+          turnosTomadosAux=res;
+        }
+        
+
+        horasAux.forEach(h => {
+          turnosTomadosAux.forEach(t => {
+            if(t.hora==h){
+              encontrado=true;
+            }
+          });
+          if(encontrado==false){
+            this.horas.push(h);
+          }
+        });
+      });
+      
+    }
+    else
+    {
     }
   }
      
@@ -453,7 +492,7 @@ export class NuevoTurnoComponent implements OnInit {
       this.turno.paciente = this.usuario;
 
     this.auth.registerTurnos(this.turno).then(res=>{
-      console.log("Guarda bien el turno");
+      
       Swal.fire({
         title:'Registro de turno exitoso',
         text:'El turno fue registrado satisfactoriamente',

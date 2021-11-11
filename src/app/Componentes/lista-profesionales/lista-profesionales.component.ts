@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DataService } from 'src/app/services/data.service';
 import { trigger, transition, style, animate, state} from '@angular/animations';
 
 @Component({
@@ -27,7 +26,7 @@ export class ListaProfesionalesComponent implements OnInit {
   @Input() listado:any;
   @Output() enventoProfesional = new EventEmitter<any>();
   
-  constructor(private data:DataService) { }
+  constructor() { }
 
   ngOnInit(): void {
     
@@ -35,8 +34,6 @@ export class ListaProfesionalesComponent implements OnInit {
 
   seleccionarProfesional(dato:any)
   {  
-    console.log("cuando hacemos clic en un profesional::");
-    console.log(dato);
      this.enventoProfesional.emit(dato);
   }
 

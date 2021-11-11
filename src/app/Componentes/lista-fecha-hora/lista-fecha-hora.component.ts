@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DataService } from 'src/app/services/data.service';
 import { trigger, transition, style, animate, state} from '@angular/animations';
 
 
@@ -28,7 +27,7 @@ export class ListaFechaHoraComponent implements OnInit {
   @Input() listado:any;
   @Output() enventoFecha = new EventEmitter<any>();
   
-  constructor(private data:DataService) { }
+  constructor() { }
 
   ngOnInit(): void {
     

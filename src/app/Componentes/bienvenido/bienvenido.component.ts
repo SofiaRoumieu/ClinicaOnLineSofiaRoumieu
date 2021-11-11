@@ -3,16 +3,11 @@ import Swal from 'sweetalert2';
 import { Usuario } from '../../clases/usuario';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { firestore } from 'firebase';
 import { trigger, transition, style, animate, state} from '@angular/animations';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {PdfMakeWrapper, Txt, Img,Table} from 'pdfmake-wrapper';
-import { TEXT_COLUMN_OPTIONS } from '@angular/cdk/table';
 import { DataService } from 'src/app/services/data.service';
-import { Turno } from 'src/app/clases/turno';
-import { ListadoTurnosComponent } from '../listado-turnos/listado-turnos.component';
 
 pdfMake.vfs=pdfFonts.pdfMake.vfs;
 
@@ -45,8 +40,7 @@ export class BienvenidoComponent implements OnInit {
   
   constructor(private router: Router,
     private authService: AuthService,
-    private dataService:DataService,
-    private db: AngularFirestore) { }
+    private dataService:DataService) { }
 
  
   ngOnInit(): void {
@@ -56,14 +50,11 @@ export class BienvenidoComponent implements OnInit {
       { 
         this.usuario=res[0];
         this.tipoUsuario=res[0].rol;
-        console.log(this.tipoUsuario);
         if(this.usuario.rol=='paciente'){
           this.dataService.getProfesionalesByPacientes(this.usuario.uid,5).then(res =>{
             if(res.length > 0)
             { 
               this.profesionalesDelPaciente=res;
-              console.log("imprimimos lista de profesionales de mi paciente");
-              console.log(this.profesionalesDelPaciente);
             }
         });
         }
@@ -109,7 +100,6 @@ export class BienvenidoComponent implements OnInit {
     let hoy=new Date();
     let fecha= hoy.getDate()+"/"+ Number(hoy.getMonth()+1)+"/"+hoy.getFullYear();
 
-    console.log(tipoHistoria);
     if(tipoHistoria=='todos'){
       this.dataService.getTurnosPorEstadoYPorPaciente(this.usuario.uid,5).then(async res =>{
         const miPdf= new PdfMakeWrapper();
@@ -156,7 +146,7 @@ export class BienvenidoComponent implements OnInit {
         miPdf.add( await new Img('../../../assets/icono.png').width(100).height(100).margin([200,20]).build() );
         miPdf.add( new Txt('Historia clínica de '+ this.usuario.nombre + " " + this.usuario.apellido+" en Clínica SR").bold().fontSize(15).alignment("center").margin(15).end);
         miPdf.add( new Txt('Fecha de emisión: ' + fecha).margin(20).alignment("center").end);
-        console.log(res.length);
+        
         
        if(res.length > 0)
         {
