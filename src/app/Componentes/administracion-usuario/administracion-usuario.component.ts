@@ -186,7 +186,7 @@ export class AdministracionUsuarioComponent implements OnInit {
       this.dataService.getTurnosPorEstadoYPorPaciente(paciente.uid,5).then(async res =>{
         const miPdf= new PdfMakeWrapper();
         miPdf.add( await new Img('../../../assets/icono.png').width(100).height(100).margin([200,20]).build() );
-        miPdf.add( new Txt('Historial de atención al '+ paciente.nombre + " " + paciente.apellido+" con el profesional " + this.usuario.nombre + " "+ this.usuario.apellido).bold().fontSize(15).alignment("center").margin(15).end);
+        miPdf.add( new Txt('Historial clínica del '+ paciente.nombre + " " + paciente.apellido + " en Clínica SR").bold().fontSize(15).alignment("center").margin(15).end);
         miPdf.add( new Txt('Fecha de emisión: ' + fecha).margin(20).alignment("center").end);
         
         if(res.length > 0)
