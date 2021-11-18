@@ -63,6 +63,7 @@ import { CalificacionPipe } from './pipes/calificacion.pipe';
 import { ListaHorasComponent } from './Componentes/lista-horas/lista-horas.component';
 import { ListaPacientesComponent } from './Componentes/lista-pacientes/lista-pacientes.component';
 import { TurnosMisPacientesComponent } from './Componentes/turnos-mis-pacientes/turnos-mis-pacientes.component';
+//import { ChartistModule } from "ng-chartist";
 
 @NgModule({
   declarations: [
@@ -95,6 +96,7 @@ import { TurnosMisPacientesComponent } from './Componentes/turnos-mis-pacientes/
     TurnosMisPacientesComponent,
   ],
   imports: [
+    //ChartistModule,
     BrowserModule,
     FormsModule,
     CommonModule,

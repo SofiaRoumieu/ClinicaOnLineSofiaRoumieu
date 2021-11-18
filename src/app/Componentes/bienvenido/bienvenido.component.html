@@ -16,6 +16,9 @@
           <div class="col-4"><label><strong>E-Mail: </strong>{{usuario.email}}</label></div>
           <div *ngIf="tipoUsuario=='profesional'" class="col-4"><label><strong>Especialidades: </strong>{{usuario.especialidades}}</label></div>
         </div>
+        <div *ngIf="tipoUsuario=='admin'"  class="row">
+          <button class="btn btn-primary" (click)="VerEstadisticas()">Ver Estadísticas</button>
+        </div>
         <div *ngIf="tipoUsuario=='paciente'"  class="row">
           <button class="btn btn-primary" (click)="VerHistoriaClinica('todos')">Historia Clínica</button>
         </div>

@@ -96,6 +96,10 @@ export class BienvenidoComponent implements OnInit {
     }
   }
 
+  VerEstadisticas(){
+    this.router.navigate(['/estadisticas']);  
+  }
+
   async VerHistoriaClinica(tipoHistoria:string){
     let hoy=new Date();
     let fecha= hoy.getDate()+"/"+ Number(hoy.getMonth()+1)+"/"+hoy.getFullYear();

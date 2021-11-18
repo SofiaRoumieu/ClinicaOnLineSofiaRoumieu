@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AuthService } from './auth.service';
 import { Usuario } from '../clases/usuario';
+import { firestore } from 'firebase';
+import { Ingreso } from '../clases/ingreso';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +14,14 @@ export class DataService {
   dbUsersRef:AngularFirestoreCollection<any>;
   dbEspecialidadRef: AngularFirestoreCollection<any>;
   dbTurnosRef:AngularFirestoreCollection<any>;
+  dbIngresosRef:AngularFirestoreCollection<any>;
 
   constructor(private db: AngularFirestore, private authService: AuthService) { 
     this.usuarios = db.collection("usuarios").snapshotChanges();
     this.dbUsersRef=this.db.collection("usuarios");
     this.dbEspecialidadRef = this.db.collection("especialidades");
     this.dbTurnosRef = this.db.collection("turnos");
+    this.dbIngresosRef= this.db.collection("ingresos");
   }
 
   getEspecialidades() {
@@ -107,6 +111,29 @@ export class DataService {
 
   getTurnos(){
     return this.dbTurnosRef.valueChanges();
+  }
+
+  async getIngresos(){
+    let ingresos = await this.dbIngresosRef.ref.get();
+    
+    let listado:Array<any> = new Array<any>();
+    let aux:Array<any>=new Array<any>();
+    let ingreso:Ingreso;
+
+    ingresos.docs.map(function(x){
+        aux.push(x.data());
+    });
+    let dia:Date;
+
+    aux.forEach(element => {
+      ingreso=new Ingreso();
+      dia=new Date(element.fechaacceso.seconds * 1000);
+      ingreso.email=element.email;
+      ingreso.fecha = dia.getDate() + "/" + Number(dia.getMonth()+1) + "/" + dia.getFullYear();
+      ingreso.hora= dia.getHours() + ":" + dia.getMinutes();
+      listado.push(ingreso);
+    });
+    return listado;
   }
 
   async getTurnosPorEstadoYPorPaciente(uidPaciente:string, estado:number){

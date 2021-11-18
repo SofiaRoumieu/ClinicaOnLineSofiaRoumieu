@@ -12,6 +12,10 @@ import { ListadoTurnosComponent } from './Componentes/listado-turnos/listado-tur
 import { HorariosProfesionalComponent } from './Componentes/horarios-profesional/horarios-profesional.component';
 
 const routes: Routes=[
+  {path:'estadisticas',
+   loadChildren:()=> import('./modules/estadisticas/estadisticas.module').then(m=>m.EstadisticasModule)
+  },
+
   {path: 'home', component:BienvenidoComponent},
   {path: 'bienvenidos', component:BienvenidoComponent},
   {path:'altaProducto', component:AltaProductoComponent},
