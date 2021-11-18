@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IBarChartOptions, IChartistAnimationOptions, IChartistData } from 'chartist';
+//import { IBarChartOptions, IChartistAnimationOptions, IChartistData } from 'chartist';
 //import { ChartEvent, ChartType } from 'ng-chartist';
 
 
